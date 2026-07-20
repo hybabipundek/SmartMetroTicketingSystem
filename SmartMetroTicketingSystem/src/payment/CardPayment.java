@@ -1,5 +1,5 @@
 package payment;
 
-public class CardPayment {
-
+public interface CardPayment {
+  boolean pay(double amount);	
 }
