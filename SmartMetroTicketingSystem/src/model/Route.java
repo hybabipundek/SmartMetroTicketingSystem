@@ -2,11 +2,11 @@ package model;
 
 public class Route {
     private String routeId;
-    private String source;       
-    private String destination;  
+    private Station source;       
+    private Station destination;  
     private double distanceKm;   
 
-    public Route(String routeId, String source, String destination, double distanceKm) {
+    public Route(String routeId, Station source, Station destination, double distanceKm) {
         this.routeId = routeId;
         this.source = source;
         this.destination = destination;
@@ -21,19 +21,19 @@ public class Route {
         this.routeId = routeId;
     }
 
-    public String getSource() {
+    public Station getSource() {
         return source;
     }
 
-    public void setSource(String source) {
+    public void setSource(Station source) {
         this.source = source;
     }
 
-    public String getDestination() {
+    public Station getDestination() {
         return destination;
     }
 
-    public void setDestination(String destination) {
+    public void setDestination(Station destination) {
         this.destination = destination;
     }
 
@@ -50,13 +50,16 @@ public class Route {
     }
   
     public void displayRoute() {
-        System.out.println("Route ID: " + routeId);
-        System.out.println("From: " + source + " -> To: " + destination);
-        System.out.println("Distance: " + distanceKm + " km");
+	System.out.println("========== Route ==========");
+        System.out.println("Route ID    : " + routeId);
+        System.out.println("Source      : " + source.getName());
+        System.out.println("Destination : " + destination.getName());
+	
+	System.out.println("===========================");
     }
 
     @Override
     public String toString() {
-        return source + " -> " + destination + " (" + distanceKm + " km)";
+        return source.getName() + " -> " + destination.getName() + " (" + distanceKm + " km)";
     }
 }
