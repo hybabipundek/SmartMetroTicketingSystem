@@ -1,5 +1,6 @@
 package service;
 
+import model.Station;
 import model.Route;
 import java.util.ArrayList;
 
@@ -12,14 +13,17 @@ public class RouteService {
 
     public void addRoute(Route route) {
         routes.add(route);
-        System.out.println("Route added: " + route.getSource() + " -> " + route.getDestination());
+        System.out.println("Route added: " + route.getSource().getName() + " -> " + route.getDestination().getName());
     }
 
-    public Route findRoute(String source, String destination) {
+    public Route findRoute(Station source, Station destination) {
         for (Route r : routes) {
-            if (r.getSource().equalsIgnoreCase(source) && r.getDestination().equalsIgnoreCase(destination)) {
+            if (r.getSource().getStationId().equalsIgnoreCase(source.getStationId()) 
+		&& 			
+		r.getDestination().getStationId().equalsIgnoreCase(destination.getStationId())) 
+		{
                 return r;
-            }
+            	}
         }
         return null; 
     }
