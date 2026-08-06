@@ -51,7 +51,7 @@ public class UserService {
     }
 
     if (password.length() < 6) {
-        System.out.println("Password must contain at least 6     characters.");
+        System.out.println("Password must contain at least 6 characters.");
         return false;
     }
 
