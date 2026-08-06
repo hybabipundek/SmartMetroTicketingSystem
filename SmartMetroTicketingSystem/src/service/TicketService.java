@@ -1,7 +1,7 @@
 package service;
-
 import java.util.ArrayList;
-
+import fare.StandardFareCalculator;
+import fare.FareCalculator;
 import enums.TicketStatus;
 import enums.TicketType;
 import model.Passenger;
@@ -15,7 +15,7 @@ public class TicketService {
 
     public TicketService() {
         tickets = new ArrayList<>();
-        fareCalculator = new FareCalculator();
+        fareCalculator = new StandardFareCalculator();
     }
 
     // Buy Ticket
