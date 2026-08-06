@@ -1,5 +1,6 @@
 package fare;
 import enums.TicketType;
+import model.Route;
 
 public class StandardFareCalculator implements FareCalculator{
 	public double calculateFare(Route route, TicketType ticketType) {
@@ -15,6 +16,9 @@ public class StandardFareCalculator implements FareCalculator{
 			break;
 		case MONTHLY:
 			fare = 60.0;
+			break;
+		default:
+			fare = 0.0;
 			break;
 		}
 		
