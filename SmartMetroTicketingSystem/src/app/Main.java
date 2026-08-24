@@ -189,13 +189,15 @@ public class Main
 	{
 		System.out.println("\n===== BUY TICKET =====");
 		
-		boolean sourceNm = true;
+		boolean sourceNm = true;  //boolean means true and false
+		Station source = null;  //Station is a class, class can be a data type
+		
 		while(sourceNm)
 		{
 			System.out.println("Enter source station name : ");
 			String sourceName = scanner.nextLine();
 			
-			Station source = stationService.searchStation(sourceName);
+			source = stationService.searchStation(sourceName);
 			
 			if(source == null)
 			{
