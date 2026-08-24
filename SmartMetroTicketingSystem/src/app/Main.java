@@ -2,6 +2,10 @@ package app;
 
 import java.util.Scanner;
 
+import model.Route;
+import model.Station;
+import enums.TicketType;
+
 import model.User;
 import model.Passenger;
 import model.Admin;
@@ -165,6 +169,7 @@ public class Main
 				String ticketID = scanner.nextLine();
 				
 				ticketService.cancelTicket(ticketID);
+				
 				break;
 				
 			case 6:
