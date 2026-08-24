@@ -1,6 +1,10 @@
 package app;
 
-import java.util.Scanner; 
+import java.util.Scanner;
+
+import model.User;
+import model.Passenger;
+import model.Admin;
 
 import service.UserService;
 import service.StationService;
@@ -49,6 +53,7 @@ public class Main
 			
 			case 1:
 				//login
+				login();
 				break;
 				
 			case 2:
@@ -65,6 +70,27 @@ public class Main
 				System.out.println("Invalid choice.");
 			}
 		}
+	}
+	
+	public void login()
+	{
+		System.out.println("Please enter your email : ");
+		String email = scanner.nextLine();
+		
+		System.out.println("Enter password : ");
+		String password = scanner.nextLine();
+		
+		User user = userService.login(email,password);
+		
+		if(user != null)
+		{
+			if(user instanceof Passenger)
+			{
+				System.out.println("Welcome Passenger");
+				//Passenger menu later
+			}
+		}
+		
 	}
 }
 
