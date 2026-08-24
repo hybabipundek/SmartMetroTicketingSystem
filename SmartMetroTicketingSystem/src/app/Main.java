@@ -156,6 +156,7 @@ public class Main
 				
 			case 3:
 				//buy ticket
+				buyticket(passenger);
 				break;
 				
 			case 4:
@@ -182,6 +183,33 @@ public class Main
 				System.out.println("Invalid choice.");
 			}
 		}
+	}
+	
+	public void buyticket(Passenger passenger)
+	{
+		System.out.println("\n===== BUY TICKET =====");
+		
+		boolean sourceNm = true;
+		while(sourceNm)
+		{
+			System.out.println("Enter source station name : ");
+			String sourceName = scanner.nextLine();
+			
+			Station source = stationService.searchStation(sourceName);
+			
+			if(source == null)
+			{
+				System.out.println("Source station not found. Please try again.");
+			}
+			else
+			{
+				sourceNm = false;
+			}
+		}
+		
+		
+		
+		
 	}
 }
 
