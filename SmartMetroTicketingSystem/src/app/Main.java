@@ -189,30 +189,102 @@ public class Main
 	{
 		System.out.println("\n===== BUY TICKET =====");
 		
-		boolean sourceNm = true;  //boolean means true and false
-		Station source = null;  //Station is a class, class can be a data type
+		boolean routeFound = true;
+		Route route = null;
 		
-		while(sourceNm)
+		while(routeFound)  //return back to let user enter again the source and destination
 		{
-			System.out.println("Enter source station name : ");
-			String sourceName = scanner.nextLine();
+			boolean sourceNm = true;  //boolean means true and false
+			Station source = null;  //Station is a class, class can be a data type
 			
-			source = stationService.searchStation(sourceName);
-			
-			if(source == null)
+			while(sourceNm)
 			{
-				System.out.println("Source station not found. Please try again.");
+				System.out.println("Enter source station name : ");
+				String sourceName = scanner.nextLine();
+				
+				source = stationService.searchStation(sourceName);
+				
+				if(source == null)
+				{
+					System.out.println("Source station not found. Please try again.");
+				}
+				else
+				{
+					sourceNm = false;
+				}
+			}
+			
+			boolean destinationNm = true;
+			Station destination = null;
+			
+			while(destinationNm)
+			{
+				System.out.println("Enter destination station name : ");
+				String destinationName = scanner.nextLine();
+				
+				destination = stationService.searchStation(destinationName);
+				
+				if(destination == null)
+				{
+					System.out.println("Destination station not found. Please try again.");
+				}
+				else
+				{
+					destinationNm = false;
+				}
+			}
+			
+			route = routeService.findRoute(source, destination);
+			
+			if(route == null)
+			{
+				System.out.println("Route not found.");
 			}
 			else
 			{
-				sourceNm = false;
+				System.out.println("Route found successfully.");
+				routeFound = false;
 			}
 		}
 		
+		boolean validTicketType = false;
+		TicketType type = null;
 		
-		
-		
+		while(!validTicketType)  //if validTicketType is true , then here means !true = false , so while loop is a false then will break out
+		{
+			System.out.println("\n===== SELECT TICKET TYPE =====");
+			System.out.println("1. Single");
+			System.out.println("2. Daily");
+			System.out.println("3. Monthly");
+			
+			System.out.println("Enter your choice : ");
+			
+			int choice = scanner.nextInt();
+			scanner.nextLine();
+			
+			switch(choice)
+			{
+				case 1:
+					type = TicketType.SINGLE;
+					validTicketType = true;
+					break;
+					
+				case 2:
+					type = TicketType.DAILY;
+					validTicketType = true;
+					break;
+					
+				case 3:
+					type = TicketType.MONTHLY;
+					validTicketType = true;
+					break;
+					
+				default:
+					System.out.println("Invalid ticket type. Please try again.");
+			}
+		}
 	}
+	
 }
 
 
