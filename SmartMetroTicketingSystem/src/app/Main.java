@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import model.Route;
 import model.Station;
+import model.Ticket;
 import enums.TicketType;
 
 import model.User;
@@ -283,8 +284,25 @@ public class Main
 					System.out.println("Invalid ticket type. Please try again.");
 			}
 		}
+			
+			String ticketId = ticketService.generateTicketId();
+			
+			Ticket ticket = ticketService.buyTicket(ticketId, passenger, route, type);
+			/*ticket return 
+			ticketId = T001
+					passenger = Kai
+					source = KLCC
+					destination = KL Sentral
+					type = SINGLE
+					fare = RM3.50
+					*/
+			
+			System.out.println("\nTicket purchased successfully");
+			
+			ticket.printTicket();
 	}
-	
 }
+	
+
 
 
