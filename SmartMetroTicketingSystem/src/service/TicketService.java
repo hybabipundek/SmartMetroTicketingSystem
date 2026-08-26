@@ -14,7 +14,7 @@ public class TicketService {
     private FareCalculator fareCalculator;
 
     public TicketService() {
-        tickets = new ArrayList<>();
+        tickets = new ArrayList<>();  //tickets = [];
         fareCalculator = new StandardFareCalculator();
     }
 
