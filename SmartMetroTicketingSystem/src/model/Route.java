@@ -2,9 +2,9 @@ package model;
 
 public class Route {
     private String routeId;
-    private Station source;       
-    private Station destination;  
-    private double distanceKm;   
+    private Station source;
+    private Station destination;
+    private double distanceKm;
 
     public Route(String routeId, Station source, Station destination, double distanceKm) {
         this.routeId = routeId;
@@ -48,18 +48,19 @@ public class Route {
     public double calculateDistance() {
         return distanceKm;
     }
-  
+
     public void displayRoute() {
-	System.out.println("========== Route ==========");
+        System.out.println("========== Route ==========");
         System.out.println("Route ID    : " + routeId);
         System.out.println("Source      : " + source.getName());
         System.out.println("Destination : " + destination.getName());
-	
-	System.out.println("===========================");
+        System.out.println("Distance    : " + distanceKm + " km");
+        System.out.println("===========================");
     }
 
     @Override
     public String toString() {
-        return source.getName() + " -> " + destination.getName() + " (" + distanceKm + " km)";
+        return source.getName() + " -> " + destination.getName()
+                + " (" + distanceKm + " km)";
     }
 }
