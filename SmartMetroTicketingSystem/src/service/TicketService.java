@@ -35,10 +35,16 @@ public class TicketService {
                 TicketStatus.ACTIVE,
                 fare
         );
-
-        tickets.add(ticket);
+        //when start , the number of ticket = 0 
+        tickets.add(ticket);  //buy ticket, number of ticket = 1 , 2 , 3...
 
         return ticket;
+    }
+    
+    //generate ticketID
+    public String generateTicketId()
+    {
+    	return "T" + String.format("%03d", tickets.size() + 1);
     }
 
     // Search Ticket
@@ -97,5 +103,4 @@ public class TicketService {
         }
 
     }
-
 }
