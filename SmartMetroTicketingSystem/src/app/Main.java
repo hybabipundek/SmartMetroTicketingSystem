@@ -134,6 +134,7 @@ public class Main
 		
 		while(passengerRunning)
 		{
+			//passenger menu
 			System.out.println("\n===== PASSENGER MENU =====");
 			System.out.println("1. View Station");
 			System.out.println("2. View Route");
@@ -192,6 +193,7 @@ public class Main
 	
 	public void buyticket(Passenger passenger)
 	{
+		//buy ticket
 		System.out.println("\n===== BUY TICKET =====");
 		
 		boolean routeFound = true;
@@ -257,6 +259,7 @@ public class Main
 		
 		while(!validTicketType)  //if validTicketType is true , then here means !true = false , so while loop is a false then will break out
 		{
+			//ticket type
 			System.out.println("\n===== SELECT TICKET TYPE =====");
 			System.out.println("1. Single");
 			System.out.println("2. Daily");
@@ -288,24 +291,82 @@ public class Main
 					System.out.println("Invalid ticket type. Please try again.");
 			}
 		}
+		
+		//calculate fare
+		double fare = ticketService.calculateFare(route, type);
+		System.out.println("\nTicket Fare: RM" + fare);
+		
+		
+		Payment payment = null;
+		boolean paymentX = true;
+		
+		while(paymentX)
+		{
+			//payment
+			System.out.println("\n===== PAYMENT METHOD =====");
+			System.out.println("1. Cash");
+			System.out.println("2. Card");
+			System.out.println("3. Cancel");
+
+			System.out.print("Enter your choice: ");
 			
+			int paymentChoice = scanner.nextInt();
+			scanner.nextLine();
+			
+			switch(paymentChoice)
+			{
+				case 1:
+					payment = new CashPayment();
+					paymentX = false;
+					break;
+					
+				case 2:
+					payment = new CardPayment("");
+					paymentX = false;
+					break;
+					
+				case 3:
+					System.out.println("Ticket purchase cancelled.");
+					return; //return back to passengerMenu() , it won't continue paymentSuccess that part.
+					
+				default:
+					System.out.println("Invalid payment method.");
+					paymentX = true;
+					break;
+			}
+		}
+		
+		boolean paymentSuccess = paymentService.processPayment(payment, fare);
+		
+		if(paymentSuccess)
+		{
 			String ticketId = ticketService.generateTicketId();
 			
 			Ticket ticket = ticketService.buyTicket(ticketId, passenger, route, type);
 			/*ticket return 
 			ticketId = T001
-					passenger = Kai
-					source = KLCC
-					destination = KL Sentral
-					type = SINGLE
-					fare = RM3.50
-					*/
-			
+			passenger = Kai
+			source = KLCC
+			destination = KL Sentral
+			type = SINGLE
+			fare = RM3.50
+			*/
+				
 			System.out.println("\nTicket purchased successfully");
-			
+				
 			ticket.printTicket();	
+		}
+		
+		else
+		{
+			System.out.println("Ticket purchase cancelled.");
+		}
 	}
 	
+	public void adminMenu()
+	{
+		
+	}
 	
 }
 	
