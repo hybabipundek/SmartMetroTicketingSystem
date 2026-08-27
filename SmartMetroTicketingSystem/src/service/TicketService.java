@@ -17,6 +17,12 @@ public class TicketService {
         tickets = new ArrayList<>();  //tickets = [];
         fareCalculator = new StandardFareCalculator();
     }
+    
+    // Calculate Fare
+    public double calculateFare(Route route, TicketType type)
+    {
+        return fareCalculator.calculateFare(route, type);
+    }
 
     // Buy Ticket
     public Ticket buyTicket(String ticketId,
