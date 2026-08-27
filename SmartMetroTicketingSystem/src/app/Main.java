@@ -2,6 +2,10 @@ package app;
 
 import java.util.Scanner;
 
+import payment.CardPayment;
+import payment.CashPayment;
+import payment.Payment;
+
 import model.Route;
 import model.Station;
 import model.Ticket;
@@ -299,8 +303,10 @@ public class Main
 			
 			System.out.println("\nTicket purchased successfully");
 			
-			ticket.printTicket();
+			ticket.printTicket();	
 	}
+	
+	
 }
 	
 
