@@ -365,7 +365,64 @@ public class Main
 	
 	public void adminMenu()
 	{
+		boolean adminRunning = true;
 		
+		while(adminRunning)
+		{
+			System.out.println("\n===== ADMIN MENU =====");
+			
+			System.out.println("1. Add Station");
+			System.out.println("2. View Stations");
+	        System.out.println("3. Add Train");
+	        System.out.println("4. View Trains");
+	        System.out.println("5. Add Route");
+	        System.out.println("6. View Routes");
+	        System.out.println("7. Logout");
+	        
+	        System.out.println("Enter your choice : ");
+	        
+	        int choice = scanner.nextInt();
+	        scanner.nextLine();
+	        
+	        switch(choice)
+	        {
+	        	case 1:
+	        		//add station
+	        		break;
+	        	
+	        	case 2:
+	        		//View stations
+	        		stationService.viewStations();
+	        		break;
+	        		
+	        	case 3:
+	        		//add train
+	        		break;
+	        		
+	        	case 4:
+	        		//view trains
+	        		break;
+	        		
+	        	case 5:
+	        		//add route
+	        		break;
+	        		
+	        	case 6:
+	        		//view routes
+	        		routeService.viewRoutes();
+	        		break;
+	        		
+	        	case 7:
+	        		adminRunning = false;
+	        		System.out.println("Logged out successfully.");
+	        		break;
+	        		
+	        	default:
+	        		System.out.println("Invalid choice.");
+	        		adminRunning = true;
+	        		break;
+	        }
+		}
 	}
 	
 }
