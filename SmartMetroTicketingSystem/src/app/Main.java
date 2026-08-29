@@ -105,7 +105,9 @@ public class Main
 			}
 			else if(user instanceof Admin)
 			{
+				Admin admin = (Admin)user;
 				System.out.println("Welcome Admin");
+				System.out.println("Admin ID: " + admin.getUserId());
 				//Admin menu 
 				adminMenu();
 			}
