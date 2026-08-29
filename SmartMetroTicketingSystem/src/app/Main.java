@@ -465,9 +465,68 @@ public class Main
 	
 	public void addRoute()
 	{
+		System.out.println("\n===== ADD ROUTE =====");
 		
+		System.out.println("Enter route ID : ");
+		String routeId = scanner.nextLine();
+		
+		boolean sourceXX = true;
+		Station source = null;
+		
+		while(sourceXX)
+		{
+			System.out.println("Enter source station name : ");
+			String sourceName = scanner.nextLine();
+			
+			//user enter sourceName , the system then search for the source station
+			source = stationService.searchStation(sourceName);
+			
+			if(source == null)
+			{
+				System.out.println("Source station not found.");
+				sourceXX = true;
+			}
+			else
+			{
+				sourceXX = false;
+			}
+		}
+		
+		boolean destinationXX = true;
+		Station destination = null;
+		
+		while(destinationXX)
+		{
+			System.out.println("Enter destination station name : ");
+			String destinationName = scanner.nextLine();
+			
+			//user enter destinationName , the system then search for the destination station
+			destination = stationService.searchStation(destinationName);
+			
+			if(destination == null)
+			{
+				System.out.println("Destination station not found.");
+				destinationXX = true;
+			}
+			else if(destination.equals(source))
+			{
+				System.out.println("Source and destination cannot be the same. Please try again.");
+			}
+			else
+			{
+				destinationXX = false;
+			}
+		}
+		
+		System.out.println("Enter distance(km) : ");
+		double distance = scanner.nextDouble();
+		scanner.nextLine();
+		
+		//the order of the name with the function is correct then ok. The name is difference no issue.
+		Route route = new Route(routeId, source , destination , distance);
+		
+		routeService.addRoute(route);
 	}
-	
 	
 }
 	
