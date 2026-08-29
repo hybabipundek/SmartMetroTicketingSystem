@@ -2,6 +2,7 @@ package app;
 
 import java.util.Scanner;
 
+
 import payment.CardPayment;
 import payment.CashPayment;
 import payment.Payment;
@@ -9,6 +10,7 @@ import payment.Payment;
 import model.Route;
 import model.Station;
 import model.Ticket;
+import model.Train;
 import enums.TicketType;
 
 import model.User;
@@ -388,6 +390,25 @@ public class Main
 	        {
 	        	case 1:
 	        		//add station
+	        		System.out.println("\n===== ADD STATION =====");
+	        		
+	        		System.out.println("Enter station ID : ");
+	        		String stationId = scanner.nextLine();
+	        		
+	        		System.out.println("Enter station name : ");
+	        		String stationName = scanner.nextLine();
+	        		
+	        		System.out.println("Enter station location : ");
+	        		String location = scanner.nextLine();
+	        		
+	        		Station station = new Station(stationId , stationName , location);
+	        		/*
+	        		 Station ID: S001
+					 Station Name: KLCC
+					 Location: Kuala Lumpur
+	        		 */
+	        		stationService.addStation(station);
+	        		
 	        		break;
 	        	
 	        	case 2:
@@ -397,14 +418,31 @@ public class Main
 	        		
 	        	case 3:
 	        		//add train
+	        		System.out.println("\n===== ADD TRAIN =====");
+	        		
+	        		System.out.println("Enter train Id : ");
+	        		String trainID = scanner.nextLine();
+	        		
+	        		System.out.println("Enter train name : ");
+	        		String trainName = scanner.nextLine();
+	        		
+	        		System.out.println("Enter train capacity : ");
+	        		int capacity = scanner.nextInt();
+	        		scanner.nextLine();
+	        		
+	        		Train train = new Train(trainID , trainName , capacity);
+	        		
+	        		trainService.addTrain(train);
 	        		break;
 	        		
 	        	case 4:
 	        		//view trains
+	        		trainService.viewTrains();
 	        		break;
 	        		
 	        	case 5:
 	        		//add route
+	        		
 	        		break;
 	        		
 	        	case 6:
