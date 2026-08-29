@@ -16,6 +16,12 @@ public class UserService {
         users = new HashMap<>();
         passengerCounter = 1;
         adminCounter = 1;
+        
+        registerAdmin(
+        		"System Admin",
+        		"admin@metro.com",
+        		"admin123"
+        );
     }
    
     private boolean validateName(String name) {
