@@ -17,11 +17,14 @@ public class UserService {
         passengerCounter = 1;
         adminCounter = 1;
         
-        registerAdmin(
-        		"System Admin",
-        		"admin@metro.com",
-        		"admin123"
-        );
+        Admin admin = new Admin(
+                "A001",
+                "System Admin",
+                "admin@metro.com",
+                "admin123"
+            );
+        
+        users.put("admin@metro.com", admin);
     }
    
     private boolean validateName(String name) {
@@ -109,7 +112,7 @@ public class UserService {
     return true;
     }
     
-    public boolean registerAdmin(String name, String email, String password) {
+    public boolean registerAdmin(String name, String email, String password) { //didn't use in main, but this function is correct and still can works one.
 
     if (!validateName(name)) {
         return false;
