@@ -1,0 +1,10 @@
+T001|Metro Express|300
+T002|City Line|250
+T003|Rapid Metro|350
+T004|Urban Express|400
+T005|Green Line|280
+T006|Blue Line|320
+T007|Central Line|450
+T008|Sky Metro|200
+T009|Smart Rail|380
+T010|Future Transit|500
