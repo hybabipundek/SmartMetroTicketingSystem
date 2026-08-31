@@ -40,6 +40,47 @@ public class Validation {
 	
 	public static boolean validatePassword(String password)
 	{
-		if(password == null || )
+		if(password == null || password.trim().isEmpty())
+		{
+			return false;
+		}
+		else if(password.length() < 6)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	public static boolean validateNumber(String input)  //double change to String
+	{
+		if(input == null || input.trim().isEmpty())
+		{
+			return false;
+		}
+		
+		try
+		{
+			//if cannot convert to double, means the input is not a number
+			//So NumberFormatException will occur.
+			double number = Double.parseDouble(input);  //Convert String into double
+			
+			if(number < 0)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}	
+		}
+		catch(NumberFormatException e)  
+		// If the input cannot be converted to double, NumberFormatException occurs.
+		// catch handles the exception and returns false.
+		{
+			return false;
+		}
 	}
 }
