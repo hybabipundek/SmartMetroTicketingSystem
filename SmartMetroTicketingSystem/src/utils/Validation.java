@@ -12,7 +12,7 @@ public class Validation {
 		{
 			return false;
 		}
-		else if(!name.matches("[a-zA-Z]+"))
+		else if(!name.matches("[a-zA-Z ]+"))
 		{
 			return false;
 		}
@@ -81,6 +81,102 @@ public class Validation {
 		// catch handles the exception and returns false.
 		{
 			return false;
+		}
+	}
+	
+	public static boolean validatePassengerID(String id)
+	{
+		if(id == null || id.trim().isEmpty())
+		{
+			return false;
+		}
+		else if(!id.matches("P\\d{3}"))
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	public static boolean validateAdminID(String id)
+	{
+		if(id == null || id.trim().isEmpty())
+		{
+			return false;
+		}
+		else if(!id.matches("A\\d{3}"))
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	public static boolean validateStationID(String id)
+	{
+		if(id == null || id.trim().isEmpty())
+		{
+			return false;
+		}
+		else if(!id.matches("S\\d{3}"))
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	public static boolean validateTrainID(String id)
+	{
+		if(id == null || id.trim().isEmpty())
+		{
+			return false;
+		}
+		else if(!id.matches("T\\d{3}"))
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	public static boolean validateRouteID(String id)
+	{
+		if(id == null || id.trim().isEmpty())
+		{
+			return false;
+		}
+		else if(!id.matches("R\\d{3}"))
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	public static boolean validateTicketID(String id)
+	{
+		if(id == null || id.trim().isEmpty())
+		{
+			return false;
+		}
+		else if(!id.matches("T\\d{3}"))
+		{
+			return false;
+		}
+		else
+		{
+			return true;
 		}
 	}
 }
