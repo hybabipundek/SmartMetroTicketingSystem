@@ -109,4 +109,13 @@ public class TicketService {
         }
 
     }
+
+    public ArrayList<Ticket> getAllTickets() {
+        return tickets;
+    }
+
+    public void setTickets(ArrayList<Ticket> tickets) {
+        this.tickets = (tickets == null) ? new ArrayList<>() : tickets;
+    }
+
 }
