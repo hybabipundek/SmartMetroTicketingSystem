@@ -25,6 +25,8 @@ import service.PaymentService;
 import repository.TXTFileManager;
 import exception.FileProcessingException;
 
+import service.ReportService;
+
 public class Main 
 {
 	private Scanner scanner = new Scanner(System.in);
@@ -32,8 +34,9 @@ public class Main
 	private UserService userService = new UserService();
 	private StationService stationService = new StationService();
 	private TrainService trainService = new TrainService();
-	private RouteService routeService = new RouteService();
 	private TicketService ticketService = new TicketService();
+	private RouteService routeService = new RouteService();
+    private ReportService reportService = new ReportService(ticketService);
 	private PaymentService paymentService = new PaymentService();
 	private TXTFileManager fileManager = new TXTFileManager(userService, stationService, trainService, routeService, ticketService);
 	
@@ -401,7 +404,8 @@ public class Main
 	        System.out.println("4. View Trains");
 	        System.out.println("5. Add Route");
 	        System.out.println("6. View Routes");
-	        System.out.println("7. Logout");
+	        System.out.println("7. View Reports");
+	        System.out.println("8. Logout");
 	        
 	        System.out.println("Enter your choice : ");
 	        
@@ -473,10 +477,14 @@ public class Main
 	        		break;
 	        		
 	        	case 7:
-	        		adminRunning = false;
-	        		System.out.println("Logged out successfully.");
-	        		break;
-	        		
+	        	    reportService.generateReport();
+	        	    break;
+	        	    
+	        	case 8:
+	        	    adminRunning = false;
+	        	    System.out.println("Logged out successfully.");
+	        	    break;
+	        	    
 	        	default:
 	        		System.out.println("Invalid choice.");
 	        		adminRunning = true;
