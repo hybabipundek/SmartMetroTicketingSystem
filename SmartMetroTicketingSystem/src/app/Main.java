@@ -2,6 +2,8 @@ package app;
 
 import java.util.Scanner;
 
+import utils.Validation;
+
 import payment.CardPayment;
 import payment.CashPayment;
 import payment.Payment;
@@ -117,8 +119,25 @@ public class Main
 	
 	public void register()
 	{
-		System.out.println("Enter name : \n");
-		String name = scanner.nextLine();
+		String name = "";
+		boolean nameCorrect = true;
+		
+		while(nameCorrect)
+		{
+			System.out.println("Enter name : \n");
+			name = scanner.nextLine();
+			
+			if(Validation.validateName(name) == false)
+			{
+				System.out.println("Name cannot be empty. Please try again.");
+				nameCorrect = true;
+			}
+			else
+			{
+				nameCorrect = false;
+			}
+		}
+		
 		
 		System.out.println("Enter email : \n");
 		String email = scanner.nextLine();
