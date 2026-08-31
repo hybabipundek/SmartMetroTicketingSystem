@@ -2,7 +2,6 @@ package app;
 
 import java.util.Scanner;
 
-
 import payment.CardPayment;
 import payment.CashPayment;
 import payment.Payment;
