@@ -484,8 +484,25 @@ public class Main
 	        		//add station
 	        		System.out.println("\n===== ADD STATION =====");
 	        		
-	        		System.out.println("Enter station ID : ");
-	        		String stationId = scanner.nextLine();
+	        		String stationId = "";
+	        		boolean sID = true;
+	        		
+	        		while(sID)
+	        		{
+	        			System.out.println("Enter station ID : ");
+		        		stationId = scanner.nextLine();
+		        		
+		        		if(Validation.validateStationID(stationId) == false)
+		        		{
+		        			System.out.println("Invalid station ID. Please try again.");
+		        			sID = true;
+		        		}
+		        		else
+		        		{
+		        			sID = false;
+		        		}
+	        		}
+	        		
 	        		
 	        		System.out.println("Enter station name : ");
 	        		String stationName = scanner.nextLine();
