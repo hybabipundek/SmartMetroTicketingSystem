@@ -37,6 +37,7 @@ public class Main
 	private RouteService routeService = new RouteService();
 	private TicketService ticketService = new TicketService();
 	private PaymentService paymentService = new PaymentService();
+	private TXTFileManager fileManager = new TXTFileManager(userService, stationService, trainService, routeService, ticketService);
 	
 	public static void main(String[] args) 
 	{
@@ -46,6 +47,15 @@ public class Main
 	
 	public void start()
 	{
+		try
+		{
+			fileManager.loadData();
+		}
+		catch (FileProcessingException exception)
+		{
+			System.out.println("Unable to load saved data: " + exception.getMessage());
+		}
+
 		System.out.println("=================================");
 		System.out.println(" SMART METRO TICKETING SYSTEM");
 		System.out.println("=================================");
@@ -77,6 +87,15 @@ public class Main
 				
 			case 3:
 				//exit
+				try
+				{
+					fileManager.saveData();
+				}
+				catch (FileProcessingException exception)
+				{
+					System.out.println("Unable to save data: " + exception.getMessage());
+				}
+
 				running = false;
 				System.out.println("Thank you for using Smart Metro Ticketing System.");
 				break;
