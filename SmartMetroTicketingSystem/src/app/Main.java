@@ -148,7 +148,7 @@ public class Main
 			
 			if(Validation.validateName(name) == false)
 			{
-				System.out.println("Name cannot be empty. Please try again.");
+				System.out.println("Invalid name. Please try again.");
 				nameCorrect = true;
 			}
 			else
@@ -157,12 +157,44 @@ public class Main
 			}
 		}
 		
+		String email = "";
+		boolean emailCorrect = true;
 		
-		System.out.println("Enter email : \n");
-		String email = scanner.nextLine();
+		while(emailCorrect)
+		{
+			System.out.println("Enter email : \n");
+			email = scanner.nextLine();
+			
+			if(Validation.validateEmail(email) == false)
+			{
+				System.out.println("Invalid email enter. Please try again.");
+				emailCorrect = true;
+			}
+			else
+			{
+				emailCorrect = false;
+			}
+		}
 		
-		System.out.println("Enter password : \n");
-		String password = scanner.nextLine();
+		String password = "";
+		boolean passwordCorrect = true;
+		
+		while(passwordCorrect)
+		{
+			System.out.println("Enter password : \n");
+			password = scanner.nextLine();
+			
+			if(Validation.validatePassword(password))
+			{
+				System.out.println("Invalid password enter. Please try again.");
+				passwordCorrect = true;
+			}
+			else
+			{
+				passwordCorrect = false;
+			}
+		}
+		
 		
 		System.out.println("Enter initial balance : \n");
 		double balance = scanner.nextDouble();
