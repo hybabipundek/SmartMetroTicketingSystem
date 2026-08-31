@@ -239,4 +239,32 @@ public class UserService {
        }
 
     }
+    
+    public HashMap<String, User> getAllUsers() {
+        return users;
+    }
+
+    public void setAllUsers(HashMap<String, User> loadedUsers) {
+        users = (loadedUsers == null) ? new HashMap<>() : loadedUsers;
+        passengerCounter = nextCounter('P');
+        adminCounter = nextCounter('A');
+    }
+
+    private int nextCounter(char prefix) {
+        int next = 1;
+        
+        for (User user : users.values()) {
+            String id = user.getUserId();
+            
+            if (id != null && id.length() > 1 && Character.toUpperCase(id.charAt(0)) == prefix) {
+                
+                try {
+                    next = Math.max(next, Integer.parseInt(id.substring(1)) + 1);
+                    } catch (NumberFormatException ignored) {
+                }
+            }
+        }
+        return next;
+    }
+
 }
