@@ -198,10 +198,25 @@ public class Main
 			}
 		}
 		
+		String balanceInput = "";  //double change to String
+		double balance = 0;
+		boolean balanceCorrect = true;
 		
-		System.out.println("Enter initial balance : \n");
-		double balance = scanner.nextDouble();
-		scanner.nextLine();
+		while(balanceCorrect)
+		{
+			System.out.println("Enter initial balance : \n");
+			balanceInput = scanner.nextLine();
+			
+			if(Validation.validateNumber(balanceInput) == false)
+			{
+				System.out.println("Invalid input. Please try again.");
+				balanceCorrect = true;
+			}
+			else
+			{
+				balanceCorrect = false;
+			}
+		}
 		
 		userService.registerPassenger(name,email,password,balance);
 	}
