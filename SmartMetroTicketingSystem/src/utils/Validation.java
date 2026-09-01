@@ -200,5 +200,33 @@ public class Validation {
 			}
 		}
 		catch(NumberFormatException e)
+		{
+			return false;
+		}
+	}
+	
+	public static boolean validateChoice(String input, int min , int max)
+	{
+		if(input == null || input.trim().isEmpty())
+		{
+			return false;
+		}
+		try
+		{
+			int choice = Integer.parseInt(input);
+			
+			if(choice < min || choice > max)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		catch(NumberFormatException e)
+		{
+			return false;
+		}
 	}
 }
