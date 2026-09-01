@@ -63,6 +63,8 @@ public class Main
 		System.out.println(" SMART METRO TICKETING SYSTEM");
 		System.out.println("=================================");
 		
+		String choiceInput = "";
+		int choice = 0;
 		boolean running = true;
 		
 		while(running)
@@ -72,50 +74,93 @@ public class Main
 			System.out.println("3. Exit");
 			System.out.println("Enter your choice : ");
 			
-			int choice = scanner.nextInt(); //save what user wrote for the choice
-			scanner.nextLine(); //Clear the enter
+			choiceInput = scanner.nextLine(); //Clear the enter
+			//save what user wrote for the choice
 			
-			switch(choice)
+			if(Validation.validateChoice(choiceInput, 1, 3) == false)
 			{
-			
-			case 1:
-				//login
-				login();
-				break;
+				System.out.println("Invalid choice enter. Please try again.");
+				running = true;
+			}
+			else
+			{
+				choice = Integer.parseInt(choiceInput);
 				
-			case 2:
-				//register
-				register();
-				break;
+				switch(choice)
+				{
 				
-			case 3:
-				//exit
-				try
-				{
-					fileManager.saveData();
-				}
-				catch (FileProcessingException exception)
-				{
-					System.out.println("Unable to save data: " + exception.getMessage());
-				}
+				case 1:
+					//login
+					login();
+					break;
+					
+				case 2:
+					//register
+					register();
+					break;
+					
+				case 3:
+					//exit
+					try
+					{
+						fileManager.saveData();
+					}
+					catch (FileProcessingException exception)
+					{
+						System.out.println("Unable to save data: " + exception.getMessage());
+					}
 
-				running = false;
-				System.out.println("Thank you for using Smart Metro Ticketing System.");
-				break;
-				
-			default:
-				System.out.println("Invalid choice.");
+					running = false;
+					System.out.println("Thank you for using Smart Metro Ticketing System.");
+					break;
+					
+				default:
+					System.out.println("Invalid choice.");
+				}
 			}
 		}
+			
 	}
 	
 	public void login()
 	{
-		System.out.println("Please enter your email : ");
-		String email = scanner.nextLine();
+		String email = "";
+		boolean emailXX = true;
 		
-		System.out.println("Enter password : ");
-		String password = scanner.nextLine();
+		while(emailXX)
+		{
+			System.out.println("Please enter your email : ");
+			email = scanner.nextLine();
+			
+			if(Validation.validateEmail(email) == false)
+			{
+				System.out.println("Invalid email enter. Please try again.");
+				emailXX = true;
+			}
+			else
+			{
+				emailXX = false;
+			}
+		}
+		
+		String password = "";
+		boolean passwordXX = true;
+		
+		while(passwordXX)
+		{
+			System.out.println("Enter password : ");
+			password = scanner.nextLine();
+			
+			if(Validation.validatePassword(password) == false)
+			{
+				System.out.println("Invalid password enter. Please try again.");
+				passwordXX = true;
+			}
+			else
+			{
+				passwordXX = false;
+			}
+		}
 		
 		User user = userService.login(email,password);
 		
@@ -224,6 +269,8 @@ public class Main
 	
 	public void passengerMenu(Passenger passenger)
 	{
+		String choiceInput = "";
+		int choice = 0;
 		boolean passengerRunning = true;
 		
 		while(passengerRunning)
@@ -239,48 +286,71 @@ public class Main
 			
 			System.out.println("Enter your choice : ");
 			
-			int choice = scanner.nextInt();
-			scanner.nextLine();
+			choiceInput = scanner.nextLine();
 			
-			switch(choice)
+			if(Validation.validateChoice(choiceInput, 1, 6) == false)
 			{
-			case 1:
-				//view station
-				stationService.viewStations();
-				break;
-				
-			case 2:
-				//view route
-				routeService.viewRoutes();
-				break;
-				
-			case 3:
-				//buy ticket
-				buyticket(passenger);
-				break;
-				
-			case 4:
-				//view ticket
-				ticketService.viewTickets(passenger);
-				break;
-				
-			case 5:
-				//cancel ticket
-				System.out.println("Enter ticket ID : ");
-				String ticketID = scanner.nextLine();
-				
-				ticketService.cancelTicket(ticketID);
-				
-				break;
-				
-			case 6:
-				//logout
-				passengerRunning = false;
-				System.out.println("Logged out succesfully.");
-				break;
-				
-			default:
-				System.out.println("Invalid choice.");
+				System.out.println("Invalid choice enter. Please try again.");
+			}
+			else
+			{
+				choice = Integer.parseInt(choiceInput);
+				switch(choice)
+				{
+				case 1:
+					//view station
+					stationService.viewStations();
+					break;
+					
+				case 2:
+					//view route
+					routeService.viewRoutes();
+					break;
+					
+				case 3:
+					//buy ticket
+					buyticket(passenger);
+					break;
+					
+				case 4:
+					//view ticket
+					ticketService.viewTickets(passenger);
+					break;
+					
+				case 5:
+					//cancel ticket
+					String ticketID = "";
+					boolean tID = true;
+					
+					while(tID)
+					{
+						System.out.println("Enter ticket ID : ");
+						ticketID = scanner.nextLine();
+						
+						if(Validation.validateTicketID(ticketID) == false)
+						{
+							System.out.println("Invalid ticket ID. Please try again.");
+							tID = true;
+						}
+						else
+						{
+							tID = false;
+						}
+					}
+					
+					ticketService.cancelTicket(ticketID);
+					
+					break;
+					
+				case 6:
+					//logout
+					passengerRunning = false;
+					System.out.println("Logged out succesfully.");
+					break;
+					
+				default:
+					System.out.println("Invalid choice.");
+				}
 			}
 		}
 	}
@@ -295,44 +365,64 @@ public class Main
 		
 		while(routeFound)  //return back to let user enter again the source and destination
 		{
+			String sourceName = "";
 			boolean sourceNm = true;  //boolean means true and false
 			Station source = null;  //Station is a class, class can be a data type
 			
 			while(sourceNm)
 			{
 				System.out.println("Enter source station name : ");
-				String sourceName = scanner.nextLine();
+				sourceName = scanner.nextLine();
 				
-				source = stationService.searchStation(sourceName);
-				
-				if(source == null)
-				{
-					System.out.println("Source station not found. Please try again.");
-				}
-				else
-				{
-					sourceNm = false;
-				}
+				if(Validation.validateName(sourceName) == false)
+			    {
+			        System.out.println("Invalid source station name. Please try again.");
+			    }
+			    else
+			    {
+			        source = stationService.searchStation(sourceName);
+
+			        if(source == null)
+			        {
+			            System.out.println("Source station not found. Please try again.");
+			        }
+			        else
+			        {
+			            sourceNm = false;
+			        }
+			    }
 			}
 			
+			String destinationName = "";
 			boolean destinationNm = true;
 			Station destination = null;
 			
 			while(destinationNm)
 			{
 				System.out.println("Enter destination station name : ");
-				String destinationName = scanner.nextLine();
+				destinationName = scanner.nextLine();
 				
-				destination = stationService.searchStation(destinationName);
-				
-				if(destination == null)
-				{
-					System.out.println("Destination station not found. Please try again.");
-				}
-				else
-				{
-					destinationNm = false;
-				}
+				if(Validation.validateName(destinationName) == false)
+			    {
+			        System.out.println("Invalid destination station name. Please try again.");
+			    }
+			    else
+			    {
+			        destination = stationService.searchStation(destinationName);
+
+			        if(destination == null)
+			        {
+			            System.out.println("Destination station not found. Please try again.");
+			        }
+			        else if(destination.equals(source))
+			        {
+			            System.out.println("Source and destination cannot be the same. Please try again.");
+			        }
+			        else
+			        {
+			            destinationNm = false;
+			        }
+			    }
 			}
 			
 			route = routeService.findRoute(source, destination);
@@ -348,6 +438,8 @@ public class Main
 			}
 		}
 		
+		String choiceInput = "";
+		int choice = 0;
 		boolean validTicketType = false;
 		TicketType type = null;
 		
@@ -361,29 +453,37 @@ public class Main
 			
 			System.out.println("Enter your choice : ");
 			
-			int choice = scanner.nextInt();
-			scanner.nextLine();
+			choiceInput = scanner.nextLine();
 			
-			switch(choice)
+			if(Validation.validateChoice(choiceInput, 1, 3) == false)
 			{
-				case 1:
-					type = TicketType.SINGLE;
-					validTicketType = true;
-					break;
-					
-				case 2:
-					type = TicketType.DAILY;
-					validTicketType = true;
-					break;
-					
-				case 3:
-					type = TicketType.MONTHLY;
-					validTicketType = true;
-					break;
-					
-				default:
-					System.out.println("Invalid ticket type. Please try again.");
+				System.out.println("Invalid choice enter. please try again.");
 			}
+			else
+			{
+				choice = Integer.parseInt(choiceInput);
+				switch(choice)
+				{
+					case 1:
+						type = TicketType.SINGLE;
+						validTicketType = true;
+						break;
+						
+					case 2:
+						type = TicketType.DAILY;
+						validTicketType = true;
+						break;
+						
+					case 3:
+						type = TicketType.MONTHLY;
+						validTicketType = true;
+						break;
+						
+					default:
+						System.out.println("Invalid ticket type. Please try again.");
+				}
+			}
+			
 		}
 		
 		//calculate fare
@@ -391,6 +491,8 @@ public class Main
 		System.out.println("\nTicket Fare: RM" + fare);
 		
 		
+		String payChoice = "";
+		int paymentChoice = 0;
 		Payment payment = null;
 		boolean paymentX = true;
 		
@@ -404,30 +506,38 @@ public class Main
 
 			System.out.print("Enter your choice: ");
 			
-			int paymentChoice = scanner.nextInt();
-			scanner.nextLine();
+			payChoice = scanner.nextLine();
 			
-			switch(paymentChoice)
+			if(Validation.validateChoice(payChoice, 1, 3) == false)
 			{
-				case 1:
-					payment = new CashPayment();
-					paymentX = false;
-					break;
-					
-				case 2:
-					payment = new CardPayment("");
-					paymentX = false;
-					break;
-					
-				case 3:
-					System.out.println("Ticket purchase cancelled.");
-					return; //return back to passengerMenu() , it won't continue paymentSuccess that part.
-					
-				default:
-					System.out.println("Invalid payment method.");
-					paymentX = true;
-					break;
+				System.out.println("Invalid choice enter. Please try again.");
 			}
+			else
+			{
+				paymentChoice = Integer.parseInt(payChoice);
+				switch(paymentChoice)
+				{
+					case 1:
+						payment = new CashPayment();
+						paymentX = false;
+						break;
+						
+					case 2:
+						payment = new CardPayment("");
+						paymentX = false;
+						break;
+						
+					case 3:
+						System.out.println("Ticket purchase cancelled.");
+						return; //return back to passengerMenu() , it won't continue paymentSuccess that part.
+						
+					default:
+						System.out.println("Invalid payment method.");
+						paymentX = true;
+						break;
+				}
+			}
+			
 		}
 		
 		boolean paymentSuccess = paymentService.processPayment(payment, fare);
@@ -459,6 +569,8 @@ public class Main
 	
 	public void adminMenu()
 	{
+		String choiceXX = "";
+		int choice = 0;
 		boolean adminRunning = true;
 		
 		while(adminRunning)
@@ -476,185 +588,192 @@ public class Main
 	        
 	        System.out.println("Enter your choice : ");
 	        
-	        int choice = scanner.nextInt();
-	        scanner.nextLine();
+	        choiceXX = scanner.nextLine();
 	        
-	        switch(choice)
+	        if(Validation.validateChoice(choiceXX, 1, 8) == false)
 	        {
-	        	case 1:
-	        		//add station
-	        		System.out.println("\n===== ADD STATION =====");
-	        		
-	        		String stationId = "";
-	        		boolean sID = true;
-	        		
-	        		while(sID)
-	        		{
-	        			System.out.println("Enter station ID : ");
-		        		stationId = scanner.nextLine();
-		        		
-		        		if(Validation.validateStationID(stationId) == false)
-		        		{
-		        			System.out.println("Invalid station ID. Please try again.");
-		        			sID = true;
-		        		}
-		        		else
-		        		{
-		        			sID = false;
-		        		}
-	        		}
-	        		
-	        		String stationName = "";
-	        		boolean sName = true;
-	        		
-	        		while(sName)
-	        		{
-	        			System.out.println("Enter station name : ");
-		        		stationName = scanner.nextLine();
-		        		
-		        		if(Validation.validateName(stationName) == false)
-		        		{
-		        			System.out.println("Invalid station name. Please try again.");
-		        			sName = true;
-		        		}
-		        		else
-		        		{
-		        			sName = false;
-		        		}
-	        		}
-	        		
-	        		String location = "";
-	        		boolean sL = true;
-	        		
-	        		while(sL)
-	        		{
-	        			System.out.println("Enter station location : ");
-		        		location = scanner.nextLine();
-		        		
-		        		if(Validation.validateName(location) == false)
-		        		{
-		        			System.out.println("Invalid station location. Please try again.");
-		        			sL = true;
-		        		}
-		        		else
-		        		{
-		        			sL = false;
-		        		}
-	        		}
-	        		
-	        		Station station = new Station(stationId , stationName , location);
-	        		/*
-	        		 Station ID: S001
-					 Station Name: KLCC
-					 Location: Kuala Lumpur
-	        		 */
-	        		stationService.addStation(station);
-	        		
-	        		break;
-	        	
-	        	case 2:
-	        		//View stations
-	        		stationService.viewStations();
-	        		break;
-	        		
-	        	case 3:
-	        		//add train
-	        		System.out.println("\n===== ADD TRAIN =====");
-	        		
-	        		String trainID = "";
-	        		boolean trainIdXX = true;
-	        		
-	        		while(trainIdXX)
-	        		{
-	        			System.out.println("Enter train Id : ");
-		        		trainID = scanner.nextLine();
-		        		
-		        		if(Validation.validateTrainID(trainID) == false)
-		        		{
-		        			System.out.println("Invalid train Id. Please try again.");
-		        			trainIdXX = true;
-		        		}
-		        		else
-		        		{
-		        			trainIdXX = false;
-		        		}
-	        		}
-	        		
-	        		String trainName = "";
-	        		boolean tName = true;
-	        		
-	        		while(tName)
-	        		{
-	        			System.out.println("Enter train name : ");
-		        		trainName = scanner.nextLine();
-		        		
-		        		if(Validation.validateName(trainName) == false)
-		        		{
-		        			System.out.println("Invalid train name. Please try again.");
-		        			tName = true;
-		        		}
-		        		else
-		        		{
-		        			tName = false;
-		        		}
-	        		}
-	        		
-	        		String capacityXX = "";
-	        		int capacity = 0;
-	        		boolean tCapacity = true;
-	        		
-	        		while(tCapacity)
-	        		{
-	        			System.out.println("Enter train capacity : ");
-		        		capacityXX = scanner.nextLine();
-		        		
-	        			if(Validation.validateCapacity(capacityXX) == false)
-	        			{
-	        				System.out.println("Invalid capacity enter. Please try again.");
-	        				tCapacity = true;
-	        			}
-	        			else
-	        			{	
-	        				//String capacityXX convert to integer
-	        				capacity = Integer.parseInt(capacityXX);
-	        				tCapacity = false;
-	        			}
-	        		}
-	        		
-	        		Train train = new Train(trainID , trainName , capacity);
-	        		
-	        		trainService.addTrain(train);
-	        		break;
-	        		
-	        	case 4:
-	        		//view trains
-	        		trainService.viewTrains();
-	        		break;
-	        		
-	        	case 5:
-	        		//add route
-	        		addRoute();
-	        		break;
-	        		
-	        	case 6:
-	        		//view routes
-	        		routeService.viewRoutes();
-	        		break;
-	        		
-	        	case 7:
-	        	    reportService.generateReport();
-	        	    break;
-	        	    
-	        	case 8:
-	        	    adminRunning = false;
-	        	    System.out.println("Logged out successfully.");
-	        	    break;
-	        	    
-	        	default:
-	        		System.out.println("Invalid choice.");
-	        		adminRunning = true;
-	        		break;
+	        	System.out.println("Invalid choice enter. Please try again.");
 	        }
+	        else
+	        {
+	        	choice = Integer.parseInt(choiceXX);
+	        	switch(choice)
+		        {
+		        	case 1:
+		        		//add station
+		        		System.out.println("\n===== ADD STATION =====");
+		        		
+		        		String stationId = "";
+		        		boolean sID = true;
+		        		
+		        		while(sID)
+		        		{
+		        			System.out.println("Enter station ID : ");
+			        		stationId = scanner.nextLine();
+			        		
+			        		if(Validation.validateStationID(stationId) == false)
+			        		{
+			        			System.out.println("Invalid station ID. Please try again.");
+			        			sID = true;
+			        		}
+			        		else
+			        		{
+			        			sID = false;
+			        		}
+		        		}
+		        		
+		        		String stationName = "";
+		        		boolean sName = true;
+		        		
+		        		while(sName)
+		        		{
+		        			System.out.println("Enter station name : ");
+			        		stationName = scanner.nextLine();
+			        		
+			        		if(Validation.validateName(stationName) == false)
+			        		{
+			        			System.out.println("Invalid station name. Please try again.");
+			        			sName = true;
+			        		}
+			        		else
+			        		{
+			        			sName = false;
+			        		}
+		        		}
+		        		
+		        		String location = "";
+		        		boolean sL = true;
+		        		
+		        		while(sL)
+		        		{
+		        			System.out.println("Enter station location : ");
+			        		location = scanner.nextLine();
+			        		
+			        		if(Validation.validateName(location) == false)
+			        		{
+			        			System.out.println("Invalid station location. Please try again.");
+			        			sL = true;
+			        		}
+			        		else
+			        		{
+			        			sL = false;
+			        		}
+		        		}
+		        		
+		        		Station station = new Station(stationId , stationName , location);
+		        		/*
+		        		 Station ID: S001
+						 Station Name: KLCC
+						 Location: Kuala Lumpur
+		        		 */
+		        		stationService.addStation(station);
+		        		
+		        		break;
+		        	
+		        	case 2:
+		        		//View stations
+		        		stationService.viewStations();
+		        		break;
+		        		
+		        	case 3:
+		        		//add train
+		        		System.out.println("\n===== ADD TRAIN =====");
+		        		
+		        		String trainID = "";
+		        		boolean trainIdXX = true;
+		        		
+		        		while(trainIdXX)
+		        		{
+		        			System.out.println("Enter train Id : ");
+			        		trainID = scanner.nextLine();
+			        		
+			        		if(Validation.validateTrainID(trainID) == false)
+			        		{
+			        			System.out.println("Invalid train Id. Please try again.");
+			        			trainIdXX = true;
+			        		}
+			        		else
+			        		{
+			        			trainIdXX = false;
+			        		}
+		        		}
+		        		
+		        		String trainName = "";
+		        		boolean tName = true;
+		        		
+		        		while(tName)
+		        		{
+		        			System.out.println("Enter train name : ");
+			        		trainName = scanner.nextLine();
+			        		
+			        		if(Validation.validateName(trainName) == false)
+			        		{
+			        			System.out.println("Invalid train name. Please try again.");
+			        			tName = true;
+			        		}
+			        		else
+			        		{
+			        			tName = false;
+			        		}
+		        		}
+		        		
+		        		String capacityXX = "";
+		        		int capacity = 0;
+		        		boolean tCapacity = true;
+		        		
+		        		while(tCapacity)
+		        		{
+		        			System.out.println("Enter train capacity : ");
+			        		capacityXX = scanner.nextLine();
+			        		
+		        			if(Validation.validateCapacity(capacityXX) == false)
+		        			{
+		        				System.out.println("Invalid capacity enter. Please try again.");
+		        				tCapacity = true;
+		        			}
+		        			else
+		        			{	
+		        				//String capacityXX convert to integer
+		        				capacity = Integer.parseInt(capacityXX);
+		        				tCapacity = false;
+		        			}
+		        		}
+		        		
+		        		Train train = new Train(trainID , trainName , capacity);
+		        		
+		        		trainService.addTrain(train);
+		        		break;
+		        		
+		        	case 4:
+		        		//view trains
+		        		trainService.viewTrains();
+		        		break;
+		        		
+		        	case 5:
+		        		//add route
+		        		addRoute();
+		        		break;
+		        		
+		        	case 6:
+		        		//view routes
+		        		routeService.viewRoutes();
+		        		break;
+		        		
+		        	case 7:
+		        	    reportService.generateReport();
+		        	    break;
+		        	    
+		        	case 8:
+		        	    adminRunning = false;
+		        	    System.out.println("Logged out successfully.");
+		        	    break;
+		        	    
+		        	default:
+		        		System.out.println("Invalid choice.");
+		        		adminRunning = true;
+		        		break;
+		        }
+	        } 				
 		}
 	}
 	
