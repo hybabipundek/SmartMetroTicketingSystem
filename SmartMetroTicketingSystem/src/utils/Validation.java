@@ -179,4 +179,26 @@ public class Validation {
 			return true;
 		}
 	}
+	
+	public static boolean validateCapacity(String capacityXX)
+	{
+		if(capacityXX == null || capacityXX.trim().isEmpty())
+		{
+			return false;
+		}
+		try
+		{
+			int number = Integer.parseInt(capacityXX);
+			
+			if(number < 0)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		catch(NumberFormatException e)
+	}
 }
