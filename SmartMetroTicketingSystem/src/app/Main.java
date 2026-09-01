@@ -187,7 +187,7 @@ public class Main
 			System.out.println("Enter password : \n");
 			password = scanner.nextLine();
 			
-			if(Validation.validatePassword(password))
+			if(Validation.validatePassword(password) == false)
 			{
 				System.out.println("Invalid password enter. Please try again.");
 				passwordCorrect = true;
@@ -213,7 +213,8 @@ public class Main
 				balanceCorrect = true;
 			}
 			else
-			{
+			{	//Convert String balanceInput into double
+				balance = Double.parseDouble(balanceInput);
 				balanceCorrect = false;
 			}
 		}
@@ -503,12 +504,43 @@ public class Main
 		        		}
 	        		}
 	        		
+	        		String stationName = "";
+	        		boolean sName = true;
 	        		
-	        		System.out.println("Enter station name : ");
-	        		String stationName = scanner.nextLine();
+	        		while(sName)
+	        		{
+	        			System.out.println("Enter station name : ");
+		        		stationName = scanner.nextLine();
+		        		
+		        		if(Validation.validateName(stationName) == false)
+		        		{
+		        			System.out.println("Invalid station name. Please try again.");
+		        			sName = true;
+		        		}
+		        		else
+		        		{
+		        			sName = false;
+		        		}
+	        		}
 	        		
-	        		System.out.println("Enter station location : ");
-	        		String location = scanner.nextLine();
+	        		String location = "";
+	        		boolean sL = true;
+	        		
+	        		while(sL)
+	        		{
+	        			System.out.println("Enter station location : ");
+		        		location = scanner.nextLine();
+		        		
+		        		if(Validation.validateName(location) == false)
+		        		{
+		        			System.out.println("Invalid station location. Please try again.");
+		        			sL = true;
+		        		}
+		        		else
+		        		{
+		        			sL = false;
+		        		}
+	        		}
 	        		
 	        		Station station = new Station(stationId , stationName , location);
 	        		/*
@@ -529,15 +561,65 @@ public class Main
 	        		//add train
 	        		System.out.println("\n===== ADD TRAIN =====");
 	        		
-	        		System.out.println("Enter train Id : ");
-	        		String trainID = scanner.nextLine();
+	        		String trainID = "";
+	        		boolean trainIdXX = true;
 	        		
-	        		System.out.println("Enter train name : ");
-	        		String trainName = scanner.nextLine();
+	        		while(trainIdXX)
+	        		{
+	        			System.out.println("Enter train Id : ");
+		        		trainID = scanner.nextLine();
+		        		
+		        		if(Validation.validateTrainID(trainID) == false)
+		        		{
+		        			System.out.println("Invalid train Id. Please try again.");
+		        			trainIdXX = true;
+		        		}
+		        		else
+		        		{
+		        			trainIdXX = false;
+		        		}
+	        		}
 	        		
-	        		System.out.println("Enter train capacity : ");
-	        		int capacity = scanner.nextInt();
-	        		scanner.nextLine();
+	        		String trainName = "";
+	        		boolean tName = true;
+	        		
+	        		while(tName)
+	        		{
+	        			System.out.println("Enter train name : ");
+		        		trainName = scanner.nextLine();
+		        		
+		        		if(Validation.validateName(trainName) == false)
+		        		{
+		        			System.out.println("Invalid train name. Please try again.");
+		        			tName = true;
+		        		}
+		        		else
+		        		{
+		        			tName = false;
+		        		}
+	        		}
+	        		
+	        		String capacityXX = "";
+	        		int capacity = 0;
+	        		boolean tCapacity = true;
+	        		
+	        		while(tCapacity)
+	        		{
+	        			System.out.println("Enter train capacity : ");
+		        		capacityXX = scanner.nextLine();
+		        		
+	        			if(Validation.validateCapacity(capacityXX) == false)
+	        			{
+	        				System.out.println("Invalid capacity enter. Please try again.");
+	        				tCapacity = true;
+	        			}
+	        			else
+	        			{	
+	        				//String capacityXX convert to integer
+	        				capacity = Integer.parseInt(capacityXX);
+	        				tCapacity = false;
+	        			}
+	        		}
 	        		
 	        		Train train = new Train(trainID , trainName , capacity);
 	        		
@@ -580,60 +662,113 @@ public class Main
 	{
 		System.out.println("\n===== ADD ROUTE =====");
 		
-		System.out.println("Enter route ID : ");
-		String routeId = scanner.nextLine();
+		String routeId = "";
+		boolean routeIdXX = true;
 		
+		while(routeIdXX)
+		{
+			System.out.println("Enter route ID : ");
+			routeId = scanner.nextLine();
+			
+			if(Validation.validateRouteID(routeId) == false)
+			{
+				System.out.println("Invalid route ID. Please try again.");
+				routeIdXX = true;
+			}
+			else
+			{
+				routeIdXX = false;
+			}
+		}
+		
+		String sourceName = "";
 		boolean sourceXX = true;
 		Station source = null;
 		
 		while(sourceXX)
 		{
 			System.out.println("Enter source station name : ");
-			String sourceName = scanner.nextLine();
+			sourceName = scanner.nextLine();
 			
-			//user enter sourceName , the system then search for the source station
-			source = stationService.searchStation(sourceName);
-			
-			if(source == null)
+			if(Validation.validateName(sourceName) == false)
 			{
-				System.out.println("Source station not found.");
+				System.out.println("Invalid source station name. Please try again.");
 				sourceXX = true;
 			}
 			else
 			{
-				sourceXX = false;
+				//user enter sourceName , the system then search for the source station
+				source = stationService.searchStation(sourceName);
+				
+				if(source == null)
+				{
+					System.out.println("Source station not found.");
+					sourceXX = true;
+				}
+				else
+				{
+					sourceXX = false;
+				}
 			}
 		}
 		
+		String destinationName = "";
 		boolean destinationXX = true;
 		Station destination = null;
 		
 		while(destinationXX)
 		{
 			System.out.println("Enter destination station name : ");
-			String destinationName = scanner.nextLine();
+			destinationName = scanner.nextLine();
 			
-			//user enter destinationName , the system then search for the destination station
-			destination = stationService.searchStation(destinationName);
-			
-			if(destination == null)
+			if(Validation.validateName(destinationName) == false)
 			{
-				System.out.println("Destination station not found.");
+				System.out.println("Invalid destination station name. Please try again.");
 				destinationXX = true;
-			}
-			else if(destination.equals(source))
-			{
-				System.out.println("Source and destination cannot be the same. Please try again.");
 			}
 			else
 			{
-				destinationXX = false;
+				//user enter destinationName , the system then search for the destination station
+				destination = stationService.searchStation(destinationName);
+				
+				if(destination == null)
+				{
+					System.out.println("Destination station not found.");
+					destinationXX = true;
+				}
+				else if(destination.equals(source))
+				{
+					System.out.println("Source and destination cannot be the same. Please try again.");
+				}
+				else
+				{
+					destinationXX = false;
+				}
 			}
 		}
 		
-		System.out.println("Enter distance(km) : ");
-		double distance = scanner.nextDouble();
-		scanner.nextLine();
+		String distanceInput = "";
+		double distance = 0;
+		boolean distanceCheck = true;
+		
+		while(distanceCheck)
+		{
+			System.out.println("Enter distance(km) : ");
+			distanceInput = scanner.nextLine();
+			
+			if(Validation.validateNumber(distanceInput) == false)
+			{
+				System.out.println("Invalid distance(km) enter. Please try again.");
+				distanceCheck = true;
+			}
+			else
+			{
+				distance = Double.parseDouble(distanceInput);
+				distanceCheck = false;
+			}
+		}
+		
+		
 		
 		//the order of the name with the function is correct then ok. The name is difference no issue.
 		Route route = new Route(routeId, source , destination , distance);
