@@ -28,10 +28,10 @@ public class Validation {
 		{
 			return false;
 		}
-		else if(!email.contains("@gmail.com"))
+		else if(!email.matches("^[A-Za-z0-9+_.-]+@(gmail\\.com|metro\\.com)$")) 
 		{
-			return false;
-		}
+	        return false;
+	    }
 		else
 		{
 			return true;
