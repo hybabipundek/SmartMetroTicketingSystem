@@ -52,8 +52,8 @@ public class Main
 	{
 		System.out.println();
 		System.out.println("╔══════════════════════════════════════════════════════════╗");
-		System.out.println("║              SMART METRO TICKETING SYSTEM              ║");
-		System.out.println("║                  Welcome to Smart Metro                ║");
+		System.out.println("║              SMART METRO TICKETING SYSTEM                ║");
+		System.out.println("║                  Welcome to Smart Metro                  ║");
 		System.out.println("╚══════════════════════════════════════════════════════════╝");
 	}
 
@@ -68,7 +68,7 @@ public class Main
 	private void printMainMenu()
 	{
 		System.out.println();
-		System.out.println("┌──────────────────── MAIN MENU ──────────────────────────┐");
+		System.out.println("┌─────────────────────── MAIN MENU ────────────────────────┐");
 		System.out.println("│  1.  Login                                               │");
 		System.out.println("│  2.  Register                                            │");
 		System.out.println("│  3.  Exit                                                │");
@@ -80,18 +80,18 @@ public class Main
 	{
 		System.out.println();
 		System.out.println("╔══════════════════════════════════════════════════════════╗");
-		System.out.println("║                  PASSENGER DASHBOARD                   ║");
-		System.out.printf("║  Passenger: %-43s ║%n", passenger.getName());
-		System.out.printf("║  Balance:   RM %-40.2f ║%n", passenger.getBalance());
+		System.out.println("║                  PASSENGER DASHBOARD                     ║");
+		System.out.printf("║ Passenger: %-43s   ║ %n", passenger.getName());
+		System.out.printf("║ Balance:   RM %-40.2f   ║%n", passenger.getBalance());
 		System.out.println("╚══════════════════════════════════════════════════════════╝");
 		System.out.println();
-		System.out.println("┌──────────────────── PASSENGER MENU ─────────────────────┐");
+		System.out.println("┌──────────────────── PASSENGER MENU ──────────────────────┐");
 		System.out.println("│  1.  View Stations                                       │");
 		System.out.println("│  2.  View Routes                                         │");
 		System.out.println("│  3.  Buy Ticket                                          │");
 		System.out.println("│  4.  View My Tickets                                     │");
 		System.out.println("│  5.  Cancel Ticket                                       │");
-		System.out.println("│  6.  Logout                                               │");
+		System.out.println("│  6.  Logout                                              │");
 		System.out.println("└──────────────────────────────────────────────────────────┘");
 		System.out.print("  Enter your choice: ");
 	}
@@ -100,11 +100,11 @@ public class Main
 	{
 		System.out.println();
 		System.out.println("╔══════════════════════════════════════════════════════════╗");
-		System.out.println("║                    ADMIN DASHBOARD                     ║");
-		System.out.println("║              System Management & Reports               ║");
+		System.out.println("║                    ADMIN DASHBOARD                       ║");
+		System.out.println("║              System Management & Reports                 ║");
 		System.out.println("╚══════════════════════════════════════════════════════════╝");
 		System.out.println();
-		System.out.println("┌───────────────────── ADMIN MENU ────────────────────────┐");
+		System.out.println("┌───────────────────── ADMIN MENU ─────────────────────────┐");
 		System.out.println("│  1.  Add Station                                         │");
 		System.out.println("│  2.  View Stations                                       │");
 		System.out.println("│  3.  Add Train                                           │");
@@ -112,7 +112,7 @@ public class Main
 		System.out.println("│  5.  Add Route                                           │");
 		System.out.println("│  6.  View Routes                                         │");
 		System.out.println("│  7.  View Reports                                        │");
-		System.out.println("│  8.  Logout                                               │");
+		System.out.println("│  8.  Logout                                              │");
 		System.out.println("└──────────────────────────────────────────────────────────┘");
 		System.out.print("  Enter your choice: ");
 	}
@@ -673,7 +673,7 @@ public class Main
 				
 			System.out.println();
 			System.out.println("╔══════════════════════════════════════════════════════════╗");
-			System.out.println("║             ✓ TICKET PURCHASE SUCCESSFUL              ║");
+			System.out.println("║             ✓ TICKET PURCHASE SUCCESSFUL                 ║");
 			System.out.println("╚══════════════════════════════════════════════════════════╝");
 			
 			ticket.printTicket();	
