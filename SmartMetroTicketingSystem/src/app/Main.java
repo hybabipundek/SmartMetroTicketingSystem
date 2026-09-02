@@ -48,6 +48,75 @@ public class Main
 		system.start();
 	}
 	
+	private void printMainHeader()
+	{
+		System.out.println();
+		System.out.println("╔══════════════════════════════════════════════════════════╗");
+		System.out.println("║              SMART METRO TICKETING SYSTEM              ║");
+		System.out.println("║                  Welcome to Smart Metro                ║");
+		System.out.println("╚══════════════════════════════════════════════════════════╝");
+	}
+
+	private void printSectionHeader(String title)
+	{
+		System.out.println();
+		System.out.println("┌──────────────────────────────────────────────────────────┐");
+		System.out.printf("│ %-56s │%n", title);
+		System.out.println("└──────────────────────────────────────────────────────────┘");
+	}
+
+	private void printMainMenu()
+	{
+		System.out.println();
+		System.out.println("┌──────────────────── MAIN MENU ──────────────────────────┐");
+		System.out.println("│  1.  Login                                               │");
+		System.out.println("│  2.  Register                                            │");
+		System.out.println("│  3.  Exit                                                │");
+		System.out.println("└──────────────────────────────────────────────────────────┘");
+		System.out.print("  Enter your choice: ");
+	}
+
+	private void printPassengerMenu(Passenger passenger)
+	{
+		System.out.println();
+		System.out.println("╔══════════════════════════════════════════════════════════╗");
+		System.out.println("║                  PASSENGER DASHBOARD                   ║");
+		System.out.printf("║  Passenger: %-43s ║%n", passenger.getName());
+		System.out.printf("║  Balance:   RM %-40.2f ║%n", passenger.getBalance());
+		System.out.println("╚══════════════════════════════════════════════════════════╝");
+		System.out.println();
+		System.out.println("┌──────────────────── PASSENGER MENU ─────────────────────┐");
+		System.out.println("│  1.  View Stations                                       │");
+		System.out.println("│  2.  View Routes                                         │");
+		System.out.println("│  3.  Buy Ticket                                          │");
+		System.out.println("│  4.  View My Tickets                                     │");
+		System.out.println("│  5.  Cancel Ticket                                       │");
+		System.out.println("│  6.  Logout                                               │");
+		System.out.println("└──────────────────────────────────────────────────────────┘");
+		System.out.print("  Enter your choice: ");
+	}
+
+	private void printAdminMenu()
+	{
+		System.out.println();
+		System.out.println("╔══════════════════════════════════════════════════════════╗");
+		System.out.println("║                    ADMIN DASHBOARD                     ║");
+		System.out.println("║              System Management & Reports               ║");
+		System.out.println("╚══════════════════════════════════════════════════════════╝");
+		System.out.println();
+		System.out.println("┌───────────────────── ADMIN MENU ────────────────────────┐");
+		System.out.println("│  1.  Add Station                                         │");
+		System.out.println("│  2.  View Stations                                       │");
+		System.out.println("│  3.  Add Train                                           │");
+		System.out.println("│  4.  View Trains                                         │");
+		System.out.println("│  5.  Add Route                                           │");
+		System.out.println("│  6.  View Routes                                         │");
+		System.out.println("│  7.  View Reports                                        │");
+		System.out.println("│  8.  Logout                                               │");
+		System.out.println("└──────────────────────────────────────────────────────────┘");
+		System.out.print("  Enter your choice: ");
+	}
+
 	public void start()
 	{
 		try
@@ -59,27 +128,22 @@ public class Main
 			System.out.println("Unable to load saved data: " + exception.getMessage());
 		}
 
-		System.out.println("=================================");
-		System.out.println(" SMART METRO TICKETING SYSTEM");
-		System.out.println("=================================");
-		
+		printMainHeader();
+
 		String choiceInput = "";
 		int choice = 0;
 		boolean running = true;
 		
 		while(running)
 		{
-			System.out.println("\n1. Login");
-			System.out.println("2. Register");
-			System.out.println("3. Exit");
-			System.out.println("Enter your choice : ");
-			
+			printMainMenu();
+
 			choiceInput = scanner.nextLine(); //Clear the enter
 			//save what user wrote for the choice
 			
 			if(Validation.validateChoice(choiceInput, 1, 3) == false)
 			{
-				System.out.println("Invalid choice enter. Please try again.");
+				System.out.println("Invalid choice. Please try again.");
 				running = true;
 			}
 			else
@@ -124,17 +188,24 @@ public class Main
 	
 	public void login()
 	{
+		printSectionHeader("LOGIN");
 		String email = "";
 		boolean emailXX = true;
 		
 		while(emailXX)
 		{
-			System.out.println("Please enter your email : ");
+			System.out.println("Please enter your email (or 0 to cancel): ");
 			email = scanner.nextLine();
+
+			if(email.equals("0"))
+			{
+				System.out.println("Login cancelled.");
+				return;
+			}
 			
 			if(Validation.validateEmail(email) == false)
 			{
-				System.out.println("Invalid email enter. Please try again.");
+				System.out.println("Invalid email. Please try again.");
 				emailXX = true;
 			}
 			else
@@ -148,12 +219,18 @@ public class Main
 		
 		while(passwordXX)
 		{
-			System.out.println("Enter password : ");
+			System.out.println("Enter password (or 0 to cancel): ");
 			password = scanner.nextLine();
+
+			if(password.equals("0"))
+			{
+				System.out.println("Login cancelled.");
+				return;
+			}
 			
 			if(Validation.validatePassword(password) == false)
 			{
-				System.out.println("Invalid password enter. Please try again.");
+				System.out.println("Invalid password. Please try again.");
 				passwordXX = true;
 			}
 			else
@@ -168,7 +245,9 @@ public class Main
 		{
 			if(user instanceof Passenger)
 			{
-				System.out.println("Welcome Passenger");
+				System.out.println();
+				System.out.println("✓ Login successful.");
+				System.out.println("Welcome, " + ((Passenger)user).getName() + "!");
 				Passenger passenger = (Passenger)user; //to confirm the user is a passenger
 				//Passenger menu 
 				passengerMenu(passenger);
@@ -176,7 +255,9 @@ public class Main
 			else if(user instanceof Admin)
 			{
 				Admin admin = (Admin)user;
-				System.out.println("Welcome Admin");
+				System.out.println();
+				System.out.println("✓ Login successful.");
+				System.out.println("Welcome, Admin!");
 				System.out.println("Admin ID: " + admin.getUserId());
 				//Admin menu 
 				adminMenu();
@@ -186,13 +267,20 @@ public class Main
 	
 	public void register()
 	{
+		printSectionHeader("CREATE PASSENGER ACCOUNT");
 		String name = "";
 		boolean nameCorrect = true;
 		
 		while(nameCorrect)
 		{
-			System.out.println("Enter name : \n");
+			System.out.println("Enter name (or 0 to cancel): ");
 			name = scanner.nextLine();
+
+			if(name.equals("0"))
+			{
+				System.out.println("Registration cancelled.");
+				return;
+			}
 			
 			if(Validation.validateName(name) == false)
 			{
@@ -210,12 +298,18 @@ public class Main
 		
 		while(emailCorrect)
 		{
-			System.out.println("Enter email : \n");
+			System.out.println("Enter email (or 0 to cancel): ");
 			email = scanner.nextLine();
+
+			if(email.equals("0"))
+			{
+				System.out.println("Registration cancelled.");
+				return;
+			}
 			
 			if(Validation.validateEmail(email) == false)
 			{
-				System.out.println("Invalid email enter. Please try again.");
+				System.out.println("Invalid email. Please try again.");
 				emailCorrect = true;
 			}
 			else
@@ -229,12 +323,18 @@ public class Main
 		
 		while(passwordCorrect)
 		{
-			System.out.println("Enter password : \n");
+			System.out.println("Enter password (or 0 to cancel): \n");
 			password = scanner.nextLine();
+
+			if(password.equals("0"))
+			{
+				System.out.println("Registration cancelled.");
+				return;
+			}
 			
 			if(Validation.validatePassword(password) == false)
 			{
-				System.out.println("Invalid password enter. Please try again.");
+				System.out.println("Invalid password. Please try again.");
 				passwordCorrect = true;
 			}
 			else
@@ -275,22 +375,13 @@ public class Main
 		
 		while(passengerRunning)
 		{
-			//passenger menu
-			System.out.println("\n===== PASSENGER MENU =====");
-			System.out.println("1. View Station");
-			System.out.println("2. View Route");
-			System.out.println("3. Buy Ticket");
-			System.out.println("4. View Ticket");
-			System.out.println("5. Cancel Ticket");
-			System.out.println("6. Logout");
-			
-			System.out.println("Enter your choice : ");
-			
+			printPassengerMenu(passenger);
+
 			choiceInput = scanner.nextLine();
 			
 			if(Validation.validateChoice(choiceInput, 1, 6) == false)
 			{
-				System.out.println("Invalid choice enter. Please try again.");
+				System.out.println("Invalid choice. Please try again.");
 			}
 			else
 			{
@@ -298,12 +389,12 @@ public class Main
 				switch(choice)
 				{
 				case 1:
-					//view station
+					printSectionHeader("METRO STATIONS");
 					stationService.viewStations();
 					break;
 					
 				case 2:
-					//view route
+					printSectionHeader("METRO ROUTES");
 					routeService.viewRoutes();
 					break;
 					
@@ -313,19 +404,25 @@ public class Main
 					break;
 					
 				case 4:
-					//view ticket
+					printSectionHeader("MY TICKETS");
 					ticketService.viewTickets(passenger);
 					break;
 					
 				case 5:
-					//cancel ticket
+					printSectionHeader("CANCEL TICKET");
 					String ticketID = "";
 					boolean tID = true;
 					
 					while(tID)
 					{
-						System.out.println("Enter ticket ID : ");
+						System.out.println("Enter ticket ID (or 0 to cancel): ");
 						ticketID = scanner.nextLine();
+			
+			if(ticketID.equals("0"))
+			{
+				System.out.println("Ticket cancellation cancelled.");
+				break;
+			}
 						
 						if(Validation.validateTicketID(ticketID) == false)
 						{
@@ -345,7 +442,7 @@ public class Main
 				case 6:
 					//logout
 					passengerRunning = false;
-					System.out.println("Logged out succesfully.");
+					System.out.println("Logged out successfully.");
 					break;
 					
 				default:
@@ -357,6 +454,7 @@ public class Main
 	
 	public void buyticket(Passenger passenger)
 	{
+		printSectionHeader("BUY METRO TICKET");
 		//buy ticket
 		System.out.println("\n===== BUY TICKET =====");
 		
@@ -371,8 +469,14 @@ public class Main
 			
 			while(sourceNm)
 			{
-				System.out.println("Enter source station name : ");
+				System.out.println("Enter source station name (or 0 to cancel): ");
 				sourceName = scanner.nextLine();
+			
+			if(sourceName.equals("0"))
+			{
+				System.out.println("Ticket purchase cancelled.");
+				return;
+			}
 				
 				if(Validation.validateName(sourceName) == false)
 			    {
@@ -399,8 +503,14 @@ public class Main
 			
 			while(destinationNm)
 			{
-				System.out.println("Enter destination station name : ");
+				System.out.println("Enter destination station name (or 0 to cancel): ");
 				destinationName = scanner.nextLine();
+			
+			if(destinationName.equals("0"))
+			{
+				System.out.println("Ticket purchase cancelled.");
+				return;
+			}
 				
 				if(Validation.validateName(destinationName) == false)
 			    {
@@ -447,17 +557,18 @@ public class Main
 		{
 			//ticket type
 			System.out.println("\n===== SELECT TICKET TYPE =====");
-			System.out.println("1. Single");
-			System.out.println("2. Daily");
-			System.out.println("3. Monthly");
-			
-			System.out.println("Enter your choice : ");
+			System.out.println("  1.  Single Ticket");
+			System.out.println("  2.  Daily Pass");
+			System.out.println("  3.  Monthly Pass");
+			System.out.println("  4.  Cancel Purchase");
+			System.out.println();
+			System.out.print("  Enter your choice: ");
 			
 			choiceInput = scanner.nextLine();
 			
-			if(Validation.validateChoice(choiceInput, 1, 3) == false)
+			if(Validation.validateChoice(choiceInput, 1, 4) == false)
 			{
-				System.out.println("Invalid choice enter. please try again.");
+				System.out.println("Invalid choice. Please try again.");
 			}
 			else
 			{
@@ -479,6 +590,10 @@ public class Main
 						validTicketType = true;
 						break;
 						
+					case 4:
+						System.out.println("Ticket purchase cancelled.");
+						return;
+						
 					default:
 						System.out.println("Invalid ticket type. Please try again.");
 				}
@@ -488,7 +603,7 @@ public class Main
 		
 		//calculate fare
 		double fare = ticketService.calculateFare(route, type);
-		System.out.println("\nTicket Fare: RM" + fare);
+		System.out.printf("%n  Calculated Fare: RM %.2f%n", fare);
 		
 		
 		String payChoice = "";
@@ -499,18 +614,18 @@ public class Main
 		while(paymentX)
 		{
 			//payment
-			System.out.println("\n===== PAYMENT METHOD =====");
-			System.out.println("1. Cash");
-			System.out.println("2. Card");
-			System.out.println("3. Cancel");
-
-			System.out.print("Enter your choice: ");
+			printSectionHeader("SELECT PAYMENT METHOD");
+			System.out.println("  1.  Cash Payment");
+			System.out.println("  2.  Card Payment");
+			System.out.println("  3.  Cancel Purchase");
+			System.out.println();
+			System.out.print("  Enter your choice: ");
 			
 			payChoice = scanner.nextLine();
 			
 			if(Validation.validateChoice(payChoice, 1, 3) == false)
 			{
-				System.out.println("Invalid choice enter. Please try again.");
+				System.out.println("Invalid choice. Please try again.");
 			}
 			else
 			{
@@ -523,7 +638,7 @@ public class Main
 						break;
 						
 					case 2:
-						payment = new CardPayment("");
+						payment = new CardPayment(scanner);
 						paymentX = false;
 						break;
 						
@@ -556,8 +671,11 @@ public class Main
 			fare = RM3.50
 			*/
 				
-			System.out.println("\nTicket purchased successfully");
-				
+			System.out.println();
+			System.out.println("╔══════════════════════════════════════════════════════════╗");
+			System.out.println("║             ✓ TICKET PURCHASE SUCCESSFUL              ║");
+			System.out.println("╚══════════════════════════════════════════════════════════╝");
+			
 			ticket.printTicket();	
 		}
 		
@@ -575,24 +693,13 @@ public class Main
 		
 		while(adminRunning)
 		{
-			System.out.println("\n===== ADMIN MENU =====");
-			
-			System.out.println("1. Add Station");
-			System.out.println("2. View Stations");
-	        System.out.println("3. Add Train");
-	        System.out.println("4. View Trains");
-	        System.out.println("5. Add Route");
-	        System.out.println("6. View Routes");
-	        System.out.println("7. View Reports");
-	        System.out.println("8. Logout");
-	        
-	        System.out.println("Enter your choice : ");
-	        
+			printAdminMenu();
+
 	        choiceXX = scanner.nextLine();
 	        
 	        if(Validation.validateChoice(choiceXX, 1, 8) == false)
 	        {
-	        	System.out.println("Invalid choice enter. Please try again.");
+	        	System.out.println("Invalid choice. Please try again.");
 	        }
 	        else
 	        {
@@ -601,15 +708,21 @@ public class Main
 		        {
 		        	case 1:
 		        		//add station
-		        		System.out.println("\n===== ADD STATION =====");
+		        		printSectionHeader("ADD METRO STATION");
 		        		
 		        		String stationId = "";
 		        		boolean sID = true;
 		        		
 		        		while(sID)
 		        		{
-		        			System.out.println("Enter station ID : ");
+		        			System.out.println("Enter station ID (or 0 to cancel): ");
 			        		stationId = scanner.nextLine();
+			
+			if(stationId.equals("0"))
+			{
+				System.out.println("Add station cancelled.");
+				return;
+			}
 			        		
 			        		if(Validation.validateStationID(stationId) == false)
 			        		{
@@ -627,8 +740,14 @@ public class Main
 		        		
 		        		while(sName)
 		        		{
-		        			System.out.println("Enter station name : ");
+		        			System.out.println("Enter station name (or 0 to cancel): ");
 			        		stationName = scanner.nextLine();
+			
+			if(stationName.equals("0"))
+			{
+				System.out.println("Add station cancelled.");
+				return;
+			}
 			        		
 			        		if(Validation.validateName(stationName) == false)
 			        		{
@@ -646,8 +765,14 @@ public class Main
 		        		
 		        		while(sL)
 		        		{
-		        			System.out.println("Enter station location : ");
+		        			System.out.println("Enter station location (or 0 to cancel): ");
 			        		location = scanner.nextLine();
+			
+			if(location.equals("0"))
+			{
+				System.out.println("Add station cancelled.");
+				return;
+			}
 			        		
 			        		if(Validation.validateName(location) == false)
 			        		{
@@ -677,15 +802,21 @@ public class Main
 		        		
 		        	case 3:
 		        		//add train
-		        		System.out.println("\n===== ADD TRAIN =====");
+		        		printSectionHeader("ADD METRO TRAIN");
 		        		
 		        		String trainID = "";
 		        		boolean trainIdXX = true;
 		        		
 		        		while(trainIdXX)
 		        		{
-		        			System.out.println("Enter train Id : ");
+		        			System.out.println("Enter train Id (or 0 to cancel): ");
 			        		trainID = scanner.nextLine();
+			
+			if(trainID.equals("0"))
+			{
+				System.out.println("Add train cancelled.");
+				return;
+			}
 			        		
 			        		if(Validation.validateTrainID(trainID) == false)
 			        		{
@@ -703,8 +834,14 @@ public class Main
 		        		
 		        		while(tName)
 		        		{
-		        			System.out.println("Enter train name : ");
+		        			System.out.println("Enter train name (or 0 to cancel): ");
 			        		trainName = scanner.nextLine();
+			
+			if(trainName.equals("0"))
+			{
+				System.out.println("Add train cancelled.");
+				return;
+			}
 			        		
 			        		if(Validation.validateName(trainName) == false)
 			        		{
@@ -723,8 +860,14 @@ public class Main
 		        		
 		        		while(tCapacity)
 		        		{
-		        			System.out.println("Enter train capacity : ");
+		        			System.out.println("Enter train capacity (or 0 to cancel): ");
 			        		capacityXX = scanner.nextLine();
+			
+			if(capacityXX.equals("0"))
+			{
+				System.out.println("Add train cancelled.");
+				return;
+			}
 			        		
 		        			if(Validation.validateCapacity(capacityXX) == false)
 		        			{
@@ -779,6 +922,7 @@ public class Main
 	
 	public void addRoute()
 	{
+		printSectionHeader("CREATE METRO ROUTE");
 		System.out.println("\n===== ADD ROUTE =====");
 		
 		String routeId = "";
@@ -786,8 +930,14 @@ public class Main
 		
 		while(routeIdXX)
 		{
-			System.out.println("Enter route ID : ");
+			System.out.println("Enter route ID (or 0 to cancel): ");
 			routeId = scanner.nextLine();
+			
+			if(routeId.equals("0"))
+			{
+				System.out.println("Add route cancelled.");
+				return;
+			}
 			
 			if(Validation.validateRouteID(routeId) == false)
 			{
@@ -806,7 +956,7 @@ public class Main
 		
 		while(sourceXX)
 		{
-			System.out.println("Enter source station name : ");
+			System.out.println("Enter source station name (or 0 to cancel): ");
 			sourceName = scanner.nextLine();
 			
 			if(Validation.validateName(sourceName) == false)
@@ -837,7 +987,7 @@ public class Main
 		
 		while(destinationXX)
 		{
-			System.out.println("Enter destination station name : ");
+			System.out.println("Enter destination station name (or 0 to cancel): ");
 			destinationName = scanner.nextLine();
 			
 			if(Validation.validateName(destinationName) == false)
@@ -872,8 +1022,14 @@ public class Main
 		
 		while(distanceCheck)
 		{
-			System.out.println("Enter distance(km) : ");
+			System.out.println("Enter distance(km) (or 0 to cancel): ");
 			distanceInput = scanner.nextLine();
+			
+			if(distanceInput.equals("0"))
+			{
+				System.out.println("Add route cancelled.");
+				return;
+			}
 			
 			if(Validation.validateNumber(distanceInput) == false)
 			{
