@@ -14,7 +14,6 @@ public class CashPayment implements Payment{
 			
 			if(paid == 0) {
 				System.out.println("Payment cancelled.\n");
-				input.close();
 				return false;
 			}
 			
@@ -37,7 +36,6 @@ public class CashPayment implements Payment{
 			}
 		}while(!success);
 		
-		input.close();
 		return true;
 	}
 }
