@@ -92,7 +92,8 @@ public class Main
 		System.out.println("│  3.  Buy Ticket                                          │");
 		System.out.println("│  4.  View My Tickets                                     │");
 		System.out.println("│  5.  Cancel Ticket                                       │");
-		System.out.println("│  6.  Logout                                               │");
+		System.out.println("│  6.  Top Up Balance                                      │");
+		System.out.println("│  7.  Logout                                               │");
 		System.out.println("└──────────────────────────────────────────────────────────┘");
 		System.out.print("  Enter your choice: ");
 	}
@@ -450,12 +451,16 @@ public class Main
 					break;
 					
 				case 6:
+					topUpBalance(passenger);
+					break;
+
+				case 7:
 					//logout
 					passengerRunning = false;
 					System.out.println("Logged out successfully.");
 					break;
-					
-				default:
+
+								default:
 					System.out.println("Invalid choice.");
 				}
 			}
@@ -463,40 +468,40 @@ public class Main
 	}
 	
 	private void topUpBalance(Passenger passenger)
-    {
-        printSectionHeader("TOP UP BALANCE");
+	{
+		printSectionHeader("TOP UP BALANCE");
 
-        while(true)
-        {
-            System.out.print("Enter top up amount (or 0 to cancel): ");
-            String amountInput = scanner.nextLine();
+		while(true)
+		{
+			System.out.print("Enter top up amount (or 0 to cancel): ");
+			String amountInput = scanner.nextLine();
 
-            if(amountInput.equals("0"))
-            {
-                System.out.println("Top up cancelled.");
-                return;
-            }
+			if(amountInput.equals("0"))
+			{
+				System.out.println("Top up cancelled.");
+				return;
+			}
 
-            if(!Validation.validateNumber(amountInput))
-            {
-                System.out.println("Invalid amount. Please try again.");
-                continue;
-            }
+			if(!Validation.validateNumber(amountInput))
+			{
+				System.out.println("Invalid amount. Please try again.");
+				continue;
+			}
 
-            double amount = Double.parseDouble(amountInput);
+			double amount = Double.parseDouble(amountInput);
 
-            if(amount <= 0)
-            {
-                System.out.println("Top up amount must be greater than RM 0.");
-                continue;
-            }
+			if(amount <= 0)
+			{
+				System.out.println("Top up amount must be greater than RM 0.");
+				continue;
+			}
 
-            userService.topUpBalance(passenger, amount);
-            return;
-        }
-    }
+			userService.topUpBalance(passenger, amount);
+			return;
+		}
+	}
 
-    private Route findRouteById(String routeId)
+	private Route findRouteById(String routeId)
 	{
 		for(Route route : routeService.getAllRoutes())
 		{
@@ -614,10 +619,11 @@ public class Main
 		while(paymentX)
 		{
 			printSectionHeader("SELECT PAYMENT METHOD");
-			System.out.println("  1.  Cash Payment");
-			System.out.println("  2.  Card Payment");
-			System.out.println("  3.  Cancel Purchase");
-			System.out.println();
+			System.out.println("  1.  Account Balance");
+		System.out.println("  2.  Cash Payment");
+		System.out.println("  3.  Card Payment");
+		System.out.println("  4.  Cancel Purchase");
+		System.out.println();
 			System.out.print("  Enter your choice: ");
 
 			payChoice = scanner.nextLine();
@@ -632,16 +638,21 @@ public class Main
 				switch(paymentChoice)
 				{
 					case 1:
-						payment = new CashPayment();
+						payment = new BalancePayment(passenger);
 						paymentX = false;
 						break;
 
 					case 2:
-						payment = new CardPayment(scanner);
+						payment = new CashPayment();
 						paymentX = false;
 						break;
 
 					case 3:
+						payment = new CardPayment(scanner);
+						paymentX = false;
+						break;
+
+					case 4:
 						System.out.println("Ticket purchase cancelled.");
 						return;
 				}
@@ -1045,7 +1056,6 @@ public class Main
 		
 		routeService.addRoute(route);
 	}
-	
 }
 	
 

@@ -174,7 +174,7 @@ public class TXTFileManager implements FileManager{
                     user.getRole().name());
 
             if (user instanceof Passenger) {
-                line += "|" + ((Passenger) user).getBalance();
+                line += "|" + String.format("%.2f", ((Passenger) user).getBalance());
             }
 
             lines.add(line);
@@ -214,7 +214,7 @@ public class TXTFileManager implements FileManager{
         for (Ticket ticket : ticketService.getAllTickets()) {
             lines.add(String.join("|", escape(ticket.getTicketId()), escape(ticket.getPassenger().getUserId()),
                     escape(ticket.getSource().getStationId()), escape(ticket.getDestination().getStationId()),
-                    ticket.getTicketType().name(), ticket.getStatus().name(), Double.toString(ticket.getFare())));
+                    ticket.getTicketType().name(), ticket.getStatus().name(), String.format("%.2f", ticket.getFare())));
         }
         return lines;
     }
