@@ -328,7 +328,7 @@ public class Main
 		
 		while(passwordCorrect)
 		{
-			System.out.println("Enter password (or 0 to cancel): \n");
+			System.out.println("Enter password (e.g: 123456) or 0 to cancel:");
 			password = scanner.nextLine();
 
 			if(password.equals("0"))
@@ -627,7 +627,7 @@ public class Main
 
 			System.out.println();
 			System.out.println("╔══════════════════════════════════════════════════════════╗");
-			System.out.println("║             ✓ TICKET PURCHASE SUCCESSFUL              ║");
+			System.out.println("║             ✓ TICKET PURCHASE SUCCESSFUL                 ║");
 			System.out.println("╚══════════════════════════════════════════════════════════╝");
 
 			ticket.printTicket();

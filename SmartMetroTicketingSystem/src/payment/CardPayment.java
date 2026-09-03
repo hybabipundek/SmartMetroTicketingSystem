@@ -11,18 +11,47 @@ public class CardPayment implements Payment {
 
         cancelled = false;
 
-        System.out.println("Enter card number (e.g. 1234-5678-1234-5678, 0 to exit): ");
+        while (true) {
 
-        do {
+            System.out.print(
+                "Enter card number (e.g. 1234-5678-1234-5678, 0 to exit): "
+            );
 
-            this.cardNumber = input.next();
+            cardNumber = input.nextLine().trim();
 
-            if (this.cardNumber.equals("0")) {
+            // CANCEL
+            if (cardNumber.equals("0")) {
                 cancelled = true;
                 return;
             }
+            
+            // EMPTY INPUT            
+            if (cardNumber.isEmpty()) {
+                System.out.println(
+                    "Card number cannot be empty. Please try again.\n"
+                );
+                continue;
+            }
+           
+            // CARD VALIDATION           
+            if (!validateCardNum(cardNumber)) {
+                System.out.println(
+                    "Invalid card number. Enter again.\n"
+                );
+                continue;
+            }
+            
+            // LUHN VALIDATION            
+            if (!luhnAlgorithm()) {
+                System.out.println(
+                    "Invalid card number. Enter again.\n"
+                );
+                continue;
+            }
 
-        } while (!validateCardNum(this.cardNumber) || !luhnAlgorithm());
+            // Everything valid
+            break;
+        }
     }
 
     public boolean pay(double amount) {
@@ -32,8 +61,14 @@ public class CardPayment implements Payment {
             return false;
         }
 
-        System.out.printf("Processing card payment of RM %.2f.%n", amount);
-        System.out.println("Card number: " + maskCardNumber(cardNumber));
+        System.out.printf(
+            "Processing card payment of RM %.2f.%n",
+            amount
+        );
+
+        System.out.println(
+            "Card number: " + maskCardNumber(cardNumber)
+        );
 
         return true;
     }
@@ -46,32 +81,24 @@ public class CardPayment implements Payment {
 
     private boolean validateCardNum(String cardNumber) {
 
+        // Check length
         if (cardNumber.length() != 19) {
-
-            System.out.println("Invalid card number. Enter again.\n");
             return false;
         }
 
+        // Check dash positions
         if (!cardNumber.substring(4, 5).equals("-") ||
             !cardNumber.substring(9, 10).equals("-") ||
             !cardNumber.substring(14, 15).equals("-")) {
 
-            System.out.println(
-                "Invalid format. Please follow specified format. " +
-                "(e.g. 1234-5678-1234-5678)\n"
-            );
-
             return false;
         }
 
+        // Remove dashes
         String number = cardNumber.replaceAll("-", "");
 
+        // Check digits only
         if (!number.matches("\\d+")) {
-
-            System.out.println(
-                "Card number should contain only digits. Enter again.\n"
-            );
-
             return false;
         }
 
@@ -108,15 +135,6 @@ public class CardPayment implements Payment {
             doubleDigit = !doubleDigit;
         }
 
-        if (sum % 10 == 0) {
-
-            System.out.println("Card number is valid.");
-            return true;
-
-        } else {
-
-            System.out.println("Card number invalid.");
-            return false;
-        }
+        return sum % 10 == 0;
     }
 }

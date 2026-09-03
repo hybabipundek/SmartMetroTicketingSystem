@@ -8,7 +8,7 @@ public class Validation {
 		{
 			return false;
 		}
-		else if(name.trim().length() < 3)
+		else if(name.trim().length() < 2)
 		{
 			return false;
 		}
@@ -170,7 +170,7 @@ public class Validation {
 		{
 			return false;
 		}
-		else if(!id.matches("T\\d{3}"))
+		else if(!id.matches("TK\\d{3}"))
 		{
 			return false;
 		}

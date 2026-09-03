@@ -50,7 +50,7 @@ public class TicketService {
     //generate ticketID
     public String generateTicketId()
     {
-    	return "T" + String.format("%03d", tickets.size() + 1);
+    	return "TK" + String.format("%03d", tickets.size() + 1);
     }
 
     // Search Ticket

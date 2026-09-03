@@ -158,15 +158,30 @@ public class TXTFileManager implements FileManager{
 
     private List<String> userLines() {
         List<String> lines = new ArrayList<>();
-        for (User user : userService.getAllUsers().values()) {
-            String line = String.join("|", escape(user.getUserId()), escape(user.getName()),
-                    escape(user.getEmail()), escape(user.getPassword()), user.getRole().name());
-            if (user instanceof Passenger) line += "|" + ((Passenger) user).getBalance();
+
+        List<User> users = new ArrayList<>(userService.getAllUsers().values());
+
+        users.sort((user1, user2) ->
+            user1.getUserId().compareTo(user2.getUserId())
+        );
+
+        for (User user : users) {
+            String line = String.join("|",
+                    escape(user.getUserId()),
+                    escape(user.getName()),
+                    escape(user.getEmail()),
+                    escape(user.getPassword()),
+                    user.getRole().name());
+
+            if (user instanceof Passenger) {
+                line += "|" + ((Passenger) user).getBalance();
+            }
+
             lines.add(line);
         }
+
         return lines;
     }
-
     private List<String> stationLines() {
         List<String> lines = new ArrayList<>();
         for (Station station : stationService.getAllStations()) {
