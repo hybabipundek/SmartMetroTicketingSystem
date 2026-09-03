@@ -154,7 +154,6 @@ public class UserService {
     User user = users.get(email);
 
     if (!user.getPassword().equals(password)) {
-        System.out.println("Incorrect password.");
         return null;
     }
 

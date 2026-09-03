@@ -68,7 +68,7 @@ public class Main
 	private void printMainMenu()
 	{
 		System.out.println();
-		System.out.println("┌─────────────────────── MAIN MENU ────────────────────────┐");
+		System.out.println("┌──────────────────────── MAIN MENU ───────────────────────┐");
 		System.out.println("│  1.  Login                                               │");
 		System.out.println("│  2.  Register                                            │");
 		System.out.println("│  3.  Exit                                                │");
@@ -81,8 +81,8 @@ public class Main
 		System.out.println();
 		System.out.println("╔══════════════════════════════════════════════════════════╗");
 		System.out.println("║                  PASSENGER DASHBOARD                     ║");
-		System.out.printf("║ Passenger: %-43s   ║ %n", passenger.getName());
-		System.out.printf("║ Balance:   RM %-40.2f   ║%n", passenger.getBalance());
+		System.out.printf("║  Passenger: %-43s   ║%n", passenger.getName());
+		System.out.printf("║  Balance:   RM %-40.2f  ║%n", passenger.getBalance());
 		System.out.println("╚══════════════════════════════════════════════════════════╝");
 		System.out.println();
 		System.out.println("┌──────────────────── PASSENGER MENU ──────────────────────┐");
@@ -188,81 +188,86 @@ public class Main
 	
 	public void login()
 	{
-		printSectionHeader("LOGIN");
-		String email = "";
-		boolean emailXX = true;
-		
-		while(emailXX)
-		{
-			System.out.println("Please enter your email (or 0 to cancel): ");
-			email = scanner.nextLine();
+	    printSectionHeader("LOGIN");
 
-			if(email.equals("0"))
-			{
-				System.out.println("Login cancelled.");
-				return;
-			}
-			
-			if(Validation.validateEmail(email) == false)
-			{
-				System.out.println("Invalid email. Please try again.");
-				emailXX = true;
-			}
-			else
-			{
-				emailXX = false;
-			}
-		}
-		
-		String password = "";
-		boolean passwordXX = true;
-		
-		while(passwordXX)
-		{
-			System.out.println("Enter password (or 0 to cancel): ");
-			password = scanner.nextLine();
+	    String email = "";
+	    String password = "";
+	    User user = null;
+ 
+	    // EMAIL
+	    while(true)
+	    {
+	        System.out.print("Please enter your email (or 0 to cancel): ");
+	        email = scanner.nextLine();
 
-			if(password.equals("0"))
-			{
-				System.out.println("Login cancelled.");
-				return;
-			}
-			
-			if(Validation.validatePassword(password) == false)
-			{
-				System.out.println("Invalid password. Please try again.");
-				passwordXX = true;
-			}
-			else
-			{
-				passwordXX = false;
-			}
-		}
-		
-		User user = userService.login(email,password);
-		
-		if(user != null)  //when user not equal to null
-		{
-			if(user instanceof Passenger)
-			{
-				System.out.println();
-				System.out.println("✓ Login successful.");
-				System.out.println("Welcome, " + ((Passenger)user).getName() + "!");
-				Passenger passenger = (Passenger)user; //to confirm the user is a passenger
-				//Passenger menu 
-				passengerMenu(passenger);
-			}
-			else if(user instanceof Admin)
-			{
-				Admin admin = (Admin)user;
-				System.out.println();
-				System.out.println("✓ Login successful.");
-				System.out.println("Welcome, Admin!");
-				System.out.println("Admin ID: " + admin.getUserId());
-				//Admin menu 
-				adminMenu();
-			}
-		}
+	        if(email.equals("0"))
+	        {
+	            System.out.println("Login cancelled.");
+	            return;
+	        }
+
+	        if(Validation.validateEmail(email) == false)
+	        {
+	            System.out.println("Invalid email. Please try again.");
+	            continue;
+	        }
+
+	        break;
+	    }
+
+	    // PASSWORD
+	    while(true)
+	    {
+	        System.out.print("Enter password (or 0 to cancel): ");
+	        password = scanner.nextLine();
+
+	        if(password.equals("0"))
+	        {
+	            System.out.println("Login cancelled.");
+	            return;
+	        }
+
+	        // Check password format
+	        if(Validation.validatePassword(password) == false)
+	        {
+	            System.out.println("Invalid password. Please try again.");
+	            continue;
+	        }
+
+	        // Check email + password against UserService
+	        user = userService.login(email, password);
+
+	        if(user == null)
+	        {
+	            System.out.println("Incorrect password. Please try again.");
+	            continue;
+	        }
+
+	        break;
+	    }
+
+	    // LOGIN SUCCESS
+	    if(user instanceof Passenger)
+	    {
+	        Passenger passenger = (Passenger) user;
+
+	        System.out.println();
+	        System.out.println("✓ Login successful.");
+	        System.out.println("Welcome, " + passenger.getName() + "!");
+
+	        passengerMenu(passenger);
+	    }
+	    else if(user instanceof Admin)
+	    {
+	        Admin admin = (Admin) user;
+
+	        System.out.println();
+	        System.out.println("✓ Login successful.");
+	        System.out.println("Welcome, Admin!");
+	        System.out.println("Admin ID: " + admin.getUserId());
+
+	        adminMenu();
+	    }
 	}
 	
 	public void register()
@@ -349,8 +354,14 @@ public class Main
 		
 		while(balanceCorrect)
 		{
-			System.out.println("Enter initial balance : \n");
+			System.out.println("Enter initial balance (or 0 to cancel): \n");
 			balanceInput = scanner.nextLine();
+
+			if(balanceInput.equals("0"))
+			{
+				System.out.println("Registration cancelled.");
+				return;
+			}
 			
 			if(Validation.validateNumber(balanceInput) == false)
 			{
@@ -435,7 +446,10 @@ public class Main
 						}
 					}
 					
-					ticketService.cancelTicket(ticketID);
+					if(ticketID != null)
+					{
+						ticketService.cancelTicket(ticketID);
+					}
 					
 					break;
 					
@@ -452,110 +466,72 @@ public class Main
 		}
 	}
 	
+	private Route findRouteById(String routeId)
+	{
+		for(Route route : routeService.getAllRoutes())
+		{
+			if(route.getRouteId().equalsIgnoreCase(routeId))
+			{
+				return route;
+			}
+		}
+		return null;
+	}
+
 	public void buyticket(Passenger passenger)
 	{
 		printSectionHeader("BUY METRO TICKET");
-		//buy ticket
 		System.out.println("\n===== BUY TICKET =====");
-		
-		boolean routeFound = true;
+
 		Route route = null;
-		
-		while(routeFound)  //return back to let user enter again the source and destination
+		boolean routeSelected = false;
+
+		while(!routeSelected)
 		{
-			String sourceName = "";
-			boolean sourceNm = true;  //boolean means true and false
-			Station source = null;  //Station is a class, class can be a data type
-			
-			while(sourceNm)
-			{
-				System.out.println("Enter source station name (or 0 to cancel): ");
-				sourceName = scanner.nextLine();
-			
-			if(sourceName.equals("0"))
+			System.out.println("Available routes:");
+			System.out.println();
+			routeService.viewRoutes();
+			System.out.println();
+			System.out.print("Enter Route ID (or 0 to cancel): ");
+			String routeId = scanner.nextLine();
+
+			if(routeId.equals("0"))
 			{
 				System.out.println("Ticket purchase cancelled.");
 				return;
 			}
-				
-				if(Validation.validateName(sourceName) == false)
-			    {
-			        System.out.println("Invalid source station name. Please try again.");
-			    }
-			    else
-			    {
-			        source = stationService.searchStation(sourceName);
 
-			        if(source == null)
-			        {
-			            System.out.println("Source station not found. Please try again.");
-			        }
-			        else
-			        {
-			            sourceNm = false;
-			        }
-			    }
-			}
-			
-			String destinationName = "";
-			boolean destinationNm = true;
-			Station destination = null;
-			
-			while(destinationNm)
+			if(!Validation.validateRouteID(routeId))
 			{
-				System.out.println("Enter destination station name (or 0 to cancel): ");
-				destinationName = scanner.nextLine();
-			
-			if(destinationName.equals("0"))
-			{
-				System.out.println("Ticket purchase cancelled.");
-				return;
+				System.out.println("Invalid Route ID. Please try again.");
+				continue;
 			}
-				
-				if(Validation.validateName(destinationName) == false)
-			    {
-			        System.out.println("Invalid destination station name. Please try again.");
-			    }
-			    else
-			    {
-			        destination = stationService.searchStation(destinationName);
 
-			        if(destination == null)
-			        {
-			            System.out.println("Destination station not found. Please try again.");
-			        }
-			        else if(destination.equals(source))
-			        {
-			            System.out.println("Source and destination cannot be the same. Please try again.");
-			        }
-			        else
-			        {
-			            destinationNm = false;
-			        }
-			    }
-			}
-			
-			route = routeService.findRoute(source, destination);
-			
+			route = findRouteById(routeId);
+
 			if(route == null)
 			{
-				System.out.println("Route not found.");
+				System.out.println("Route not found. Please try again.");
 			}
 			else
 			{
-				System.out.println("Route found successfully.");
-				routeFound = false;
+				routeSelected = true;
+				System.out.println();
+				System.out.println("Selected Route:");
+				System.out.println("  Route ID    : " + route.getRouteId());
+				System.out.println("  Source      : " + route.getSource().getName());
+				System.out.println("  Destination : " + route.getDestination().getName());
+				System.out.printf("  Distance    : %.2f km%n", route.getDistanceKm());
 			}
 		}
-		
+
 		String choiceInput = "";
 		int choice = 0;
 		boolean validTicketType = false;
 		TicketType type = null;
-		
-		while(!validTicketType)  //if validTicketType is true , then here means !true = false , so while loop is a false then will break out
+
+		while(!validTicketType)
 		{
-			//ticket type
 			System.out.println("\n===== SELECT TICKET TYPE =====");
 			System.out.println("  1.  Single Ticket");
 			System.out.println("  2.  Daily Pass");
@@ -563,9 +539,9 @@ public class Main
 			System.out.println("  4.  Cancel Purchase");
 			System.out.println();
 			System.out.print("  Enter your choice: ");
-			
+
 			choiceInput = scanner.nextLine();
-			
+
 			if(Validation.validateChoice(choiceInput, 1, 4) == false)
 			{
 				System.out.println("Invalid choice. Please try again.");
@@ -579,50 +555,43 @@ public class Main
 						type = TicketType.SINGLE;
 						validTicketType = true;
 						break;
-						
+
 					case 2:
 						type = TicketType.DAILY;
 						validTicketType = true;
 						break;
-						
+
 					case 3:
 						type = TicketType.MONTHLY;
 						validTicketType = true;
 						break;
-						
+
 					case 4:
 						System.out.println("Ticket purchase cancelled.");
 						return;
-						
-					default:
-						System.out.println("Invalid ticket type. Please try again.");
 				}
 			}
-			
 		}
-		
-		//calculate fare
+
 		double fare = ticketService.calculateFare(route, type);
 		System.out.printf("%n  Calculated Fare: RM %.2f%n", fare);
-		
-		
+
 		String payChoice = "";
 		int paymentChoice = 0;
 		Payment payment = null;
 		boolean paymentX = true;
-		
+
 		while(paymentX)
 		{
-			//payment
 			printSectionHeader("SELECT PAYMENT METHOD");
 			System.out.println("  1.  Cash Payment");
 			System.out.println("  2.  Card Payment");
 			System.out.println("  3.  Cancel Purchase");
 			System.out.println();
 			System.out.print("  Enter your choice: ");
-			
+
 			payChoice = scanner.nextLine();
-			
+
 			if(Validation.validateChoice(payChoice, 1, 3) == false)
 			{
 				System.out.println("Invalid choice. Please try again.");
@@ -636,55 +605,39 @@ public class Main
 						payment = new CashPayment();
 						paymentX = false;
 						break;
-						
+
 					case 2:
 						payment = new CardPayment(scanner);
 						paymentX = false;
 						break;
-						
+
 					case 3:
 						System.out.println("Ticket purchase cancelled.");
-						return; //return back to passengerMenu() , it won't continue paymentSuccess that part.
-						
-					default:
-						System.out.println("Invalid payment method.");
-						paymentX = true;
-						break;
+						return;
 				}
 			}
-			
 		}
-		
+
 		boolean paymentSuccess = paymentService.processPayment(payment, fare);
-		
+
 		if(paymentSuccess)
 		{
 			String ticketId = ticketService.generateTicketId();
-			
 			Ticket ticket = ticketService.buyTicket(ticketId, passenger, route, type);
-			/*ticket return 
-			ticketId = T001
-			passenger = Kai
-			source = KLCC
-			destination = KL Sentral
-			type = SINGLE
-			fare = RM3.50
-			*/
-				
+
 			System.out.println();
 			System.out.println("╔══════════════════════════════════════════════════════════╗");
-			System.out.println("║             ✓ TICKET PURCHASE SUCCESSFUL                 ║");
+			System.out.println("║             ✓ TICKET PURCHASE SUCCESSFUL              ║");
 			System.out.println("╚══════════════════════════════════════════════════════════╝");
-			
-			ticket.printTicket();	
+
+			ticket.printTicket();
 		}
-		
 		else
 		{
 			System.out.println("Ticket purchase cancelled.");
 		}
 	}
-	
+
 	public void adminMenu()
 	{
 		String choiceXX = "";
@@ -958,6 +911,12 @@ public class Main
 		{
 			System.out.println("Enter source station name (or 0 to cancel): ");
 			sourceName = scanner.nextLine();
+
+			if(sourceName.equals("0"))
+			{
+				System.out.println("Add route cancelled.");
+				return;
+			}
 			
 			if(Validation.validateName(sourceName) == false)
 			{
@@ -989,6 +948,12 @@ public class Main
 		{
 			System.out.println("Enter destination station name (or 0 to cancel): ");
 			destinationName = scanner.nextLine();
+
+			if(destinationName.equals("0"))
+			{
+				System.out.println("Add route cancelled.");
+				return;
+			}
 			
 			if(Validation.validateName(destinationName) == false)
 			{
