@@ -1,11 +1,11 @@
-S001|KL Sentral|Kuala Lumpur
-S002|Pasar Seni|Kuala Lumpur
-S003|Bukit Bintang|Kuala Lumpur
-S004|KLCC|Kuala Lumpur
 S005|Ampang Park|Kuala Lumpur
 S006|Bangsar|Kuala Lumpur
-S007|Mid Valley|Kuala Lumpur
-S008|Titiwangsa|Kuala Lumpur
+S003|Bukit Bintang|Kuala Lumpur
 S009|Cochrane|Kuala Lumpur
 S010|Kajang|Selangor
+S001|KL Sentral|Kuala Lumpur
+S004|KLCC|Kuala Lumpur
+S007|Mid Valley|Kuala Lumpur
+S002|Pasar Seni|Kuala Lumpur
 S011|Putrajaya|Putrajaya
+S008|Titiwangsa|Kuala Lumpur
