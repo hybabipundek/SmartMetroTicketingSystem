@@ -8,3 +8,4 @@ T007|Central Line|450
 T008|Sky Metro|200
 T009|Smart Rail|380
 T010|Future Transit|500
+T011|Metro Lim|500

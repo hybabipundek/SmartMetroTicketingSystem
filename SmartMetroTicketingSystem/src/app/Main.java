@@ -352,18 +352,17 @@ public class Main
 		
 		while(balanceCorrect)
 		{
-			System.out.println("Enter initial balance (or 0 to cancel): \n");
+			System.out.print("Enter initial balance (RM 0 allowed, -1 to cancel): ");
 			balanceInput = scanner.nextLine();
 
-			if(balanceInput.equals("0"))
-			{
-				System.out.println("Registration cancelled.");
-				return;
+			if (balanceInput.equals("-1")) {
+			    System.out.println("Registration cancelled.");
+			    return;
 			}
 			
 			if(Validation.validateNumber(balanceInput) == false)
 			{
-				System.out.println("Invalid input. Please try again.");
+				System.out.println("Invalid balance. Please try again.");
 				balanceCorrect = true;
 			}
 			else
