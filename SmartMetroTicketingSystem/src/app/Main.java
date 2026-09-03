@@ -25,6 +25,7 @@ import service.TrainService;
 import service.RouteService;
 import service.TicketService;
 import service.PaymentService;
+import repository.FileManager;
 import repository.TXTFileManager;
 import exception.FileProcessingException;
 
@@ -41,7 +42,7 @@ public class Main
 	private RouteService routeService = new RouteService();
     private ReportService reportService = new ReportService(ticketService);
 	private PaymentService paymentService = new PaymentService();
-	private TXTFileManager fileManager = new TXTFileManager(userService, stationService, trainService, routeService, ticketService);
+	private FileManager fileManager = new TXTFileManager(userService, stationService, trainService, routeService, ticketService);
 	
 	public static void main(String[] args) 
 	{
