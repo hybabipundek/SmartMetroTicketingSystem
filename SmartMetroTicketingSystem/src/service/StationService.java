@@ -13,9 +13,18 @@ public class StationService {
     }
 
     public void addStation(Station station) {
+        if (station == null) {
+            System.out.println("Invalid station.");
+            return;
+        }
+
         for (Station s : stations) {
             if (s.getStationId().equalsIgnoreCase(station.getStationId())) {
                 System.out.println("Station ID already exists: " + station.getStationId());
+                return;
+            }
+            if (s.getName().trim().equalsIgnoreCase(station.getName().trim())) {
+                System.out.println("Station name already exists: " + station.getName());
                 return;
             }
         }
@@ -25,10 +34,9 @@ public class StationService {
     }
 
     public Station searchStation(String name) {
+        if (name == null) return null;
         for (Station s : stations) {
-            if (s.getName().equalsIgnoreCase(name)) {
-                return s;
-            }
+            if (s.getName().trim().equalsIgnoreCase(name.trim())) return s;
         }
         return null;
     }
@@ -47,6 +55,7 @@ public class StationService {
 
     public void sortStationsByName() {
         stations.sort(Comparator.comparing(Station::getName, String.CASE_INSENSITIVE_ORDER));
+        System.out.println("Stations sorted by name.");
     }
 
     public ArrayList<Station> getAllStations() {

@@ -14,8 +14,18 @@ public class RouteService {
     }
 
     public void addRoute(Route route) {
+        if (route == null || route.getSource() == null || route.getDestination() == null) {
+            System.out.println("Invalid route.");
+            return;
+        }
+
         if (route.getSource().getStationId().equalsIgnoreCase(route.getDestination().getStationId())) {
             System.out.println("Source and destination cannot be the same station.");
+            return;
+        }
+
+        if (!Double.isFinite(route.getDistanceKm()) || route.getDistanceKm() <= 0) {
+            System.out.println("Route distance must be greater than 0 km.");
             return;
         }
 
@@ -27,13 +37,11 @@ public class RouteService {
         }
 
         routes.add(route);
-        System.out.println("Route added: "
-                + route.getSource().getName()
-                + " -> "
-                + route.getDestination().getName());
+        System.out.println("Route added: " + route.getSource().getName() + " -> " + route.getDestination().getName());
     }
 
     public Route findRoute(Station source, Station destination) {
+        if (source == null || destination == null) return null;
         for (Route r : routes) {
             if (r.getSource().getStationId().equalsIgnoreCase(source.getStationId())
                     && r.getDestination().getStationId().equalsIgnoreCase(destination.getStationId())) {
@@ -57,6 +65,7 @@ public class RouteService {
 
     public void sortRoutesByDistance() {
         routes.sort(Comparator.comparingDouble(Route::getDistanceKm));
+        System.out.println("Routes sorted by distance.");
     }
 
     public ArrayList<Route> getAllRoutes() {

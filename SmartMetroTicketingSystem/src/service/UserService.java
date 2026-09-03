@@ -2,9 +2,11 @@ package service;
 
 import java.util.HashMap;
 
+import exception.InvalidLoginException;
 import model.Admin;
 import model.Passenger;
 import model.User;
+import utils.Validation;
 
 public class UserService {
 
@@ -28,43 +30,35 @@ public class UserService {
     }
 
     private boolean validateName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            System.out.println("Name cannot be empty.");
+        if (!Validation.validateName(name)) {
+            System.out.println("Invalid name.");
             return false;
         }
         return true;
     }
 
     private boolean validateEmail(String email) {
-        if (email == null || email.trim().isEmpty()) {
-            System.out.println("Email cannot be empty.");
+        if (!Validation.validateEmail(email)) {
+            System.out.println("Invalid email format. Use a valid Gmail or metro.com address.");
             return false;
         }
-
-        if (!email.contains("@") || !email.contains(".")) {
-            System.out.println("Invalid email format.");
-            return false;
-        }
-
         return true;
     }
 
     private boolean validatePassword(String password) {
-        if (password == null || password.trim().isEmpty()) {
-            System.out.println("Password cannot be empty.");
-            return false;
-        }
-
-        if (password.length() < 6) {
+        if (!Validation.validatePassword(password)) {
             System.out.println("Password must contain at least 6 characters.");
             return false;
         }
-
         return true;
     }
 
     private boolean isEmailExist(String email) {
         return users.containsKey(email);
+    }
+
+    public boolean emailExists(String email) {
+        return email != null && users.containsKey(email);
     }
 
     private String generatePassengerId() {
@@ -85,22 +79,17 @@ public class UserService {
             return false;
         }
 
-        if (balance < 0) {
-            System.out.println("Initial balance cannot be negative.");
+        if (!Double.isFinite(balance) || balance < 0) {
+            System.out.println("Initial balance cannot be negative or invalid.");
             return false;
         }
 
         String userId = generatePassengerId();
-
-        Passenger passenger = new Passenger(
-                userId, name, email, password, balance
-        );
-
+        Passenger passenger = new Passenger(userId, name, email, password, balance);
         users.put(email, passenger);
 
         System.out.println("Passenger registered successfully.");
         System.out.println("Passenger ID: " + userId);
-
         return true;
     }
 
@@ -116,24 +105,19 @@ public class UserService {
 
         String userId = generateAdminId();
         Admin admin = new Admin(userId, name, email, password);
-
         users.put(email, admin);
 
         System.out.println("Admin registered successfully.");
         System.out.println("Admin ID: " + userId);
-
         return true;
     }
 
     public User login(String email, String password) {
-        if (!isEmailExist(email)) {
-            System.out.println("Email does not exist.");
-            return null;
-        }
-
         User user = users.get(email);
 
-        if (!user.getPassword().equals(password)) return null;
+        if (user == null || !user.getPassword().equals(password)) {
+            throw new InvalidLoginException("Invalid email or password.");
+        }
 
         System.out.println("Login successful.");
         return user;
@@ -144,7 +128,6 @@ public class UserService {
             System.out.println("Email does not exist.");
             return null;
         }
-
         return users.get(email);
     }
 
@@ -162,11 +145,9 @@ public class UserService {
         }
 
         users.remove(email);
-
         user.setName(newName);
         user.setEmail(newEmail);
         user.setPassword(newPassword);
-
         users.put(newEmail, user);
 
         System.out.println("User updated successfully.");
@@ -190,18 +171,13 @@ public class UserService {
             return false;
         }
 
-        if (amount <= 0) {
+        if (!Double.isFinite(amount) || amount <= 0) {
             System.out.println("Top up amount must be greater than RM 0.");
             return false;
         }
 
         passenger.topUp(amount);
-
-        System.out.printf(
-            "Top up successful. New balance: RM %.2f%n",
-            passenger.getBalance()
-        );
-
+        System.out.printf("Top up successful. New balance: RM %.2f%n", passenger.getBalance());
         return true;
     }
 
@@ -229,22 +205,15 @@ public class UserService {
 
     private int nextCounter(char prefix) {
         int next = 1;
-
         for (User user : users.values()) {
             String id = user.getUserId();
-
-            if (id != null && id.length() > 1 &&
-                Character.toUpperCase(id.charAt(0)) == prefix) {
+            if (id != null && id.length() > 1 && Character.toUpperCase(id.charAt(0)) == prefix) {
                 try {
-                    next = Math.max(
-                        next,
-                        Integer.parseInt(id.substring(1)) + 1
-                    );
+                    next = Math.max(next, Integer.parseInt(id.substring(1)) + 1);
                 } catch (NumberFormatException ignored) {
                 }
             }
         }
-
         return next;
     }
 }

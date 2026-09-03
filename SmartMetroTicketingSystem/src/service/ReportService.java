@@ -10,11 +10,6 @@ import enums.TicketStatus;
 import enums.TicketType;
 import model.Ticket;
 
-/**
- * Produces summary reports from live ticket data.
- * Holds a reference to TicketService (not a copy of the list) so that
- * every report reflects the current state of the system.
- */
 public class ReportService {
 
     private final TicketService ticketService;
@@ -23,7 +18,6 @@ public class ReportService {
         this.ticketService = ticketService;
     }
 
-    /** Full system report: runs every section in order. */
     public void generateReport() {
         System.out.println();
         System.out.println("==================================================");
@@ -47,12 +41,9 @@ public class ReportService {
         System.out.println("==================================================");
     }
 
-    /** Ticket counts broken down by status. */
     public void showTotalSales() {
         Map<TicketStatus, Integer> counts = new EnumMap<>(TicketStatus.class);
-        for (TicketStatus status : TicketStatus.values()) {
-            counts.put(status, 0);
-        }
+        for (TicketStatus status : TicketStatus.values()) counts.put(status, 0);
         for (Ticket ticket : ticketService.getAllTickets()) {
             counts.put(ticket.getStatus(), counts.get(ticket.getStatus()) + 1);
         }
@@ -64,35 +55,31 @@ public class ReportService {
         }
     }
 
-    /** Revenue earned. Cancelled tickets are refunded and earn nothing. */
     public void showTotalRevenue() {
         double revenue = 0.0;
-        double refunded = 0.0;
+        double cancelledValue = 0.0;
         int counted = 0;
 
         for (Ticket ticket : ticketService.getAllTickets()) {
             if (ticket.getStatus() == TicketStatus.CANCELLED) {
-                refunded += ticket.getFare();
+                cancelledValue += ticket.getFare();
             } else {
                 revenue += ticket.getFare();
                 counted++;
             }
         }
 
-        double average = (counted == 0) ? 0.0 : revenue / counted;
+        double average = counted == 0 ? 0.0 : revenue / counted;
 
         System.out.println("\n--- REVENUE ---");
         System.out.printf("%-22s : RM %.2f%n", "Total revenue", revenue);
-        System.out.printf("%-22s : RM %.2f%n", "Refunded (cancelled)", refunded);
+        System.out.printf("%-22s : RM %.2f%n", "Cancelled ticket value", cancelledValue);
         System.out.printf("%-22s : RM %.2f%n", "Average per ticket", average);
     }
 
-    /** Revenue split by ticket type. */
     public void showRevenueByType() {
         Map<TicketType, Double> byType = new EnumMap<>(TicketType.class);
-        for (TicketType type : TicketType.values()) {
-            byType.put(type, 0.0);
-        }
+        for (TicketType type : TicketType.values()) byType.put(type, 0.0);
         for (Ticket ticket : ticketService.getAllTickets()) {
             if (ticket.getStatus() != TicketStatus.CANCELLED) {
                 byType.put(ticket.getTicketType(), byType.get(ticket.getTicketType()) + ticket.getFare());
@@ -106,7 +93,6 @@ public class ReportService {
         }
     }
 
-    /** Busiest departure stations, ranked using a Comparator. */
     public void showBusiestStations() {
         Map<String, Integer> boardings = new HashMap<>();
         for (Ticket ticket : ticketService.getAllTickets()) {
@@ -116,7 +102,7 @@ public class ReportService {
         }
 
         List<Map.Entry<String, Integer>> ranked = new ArrayList<>(boardings.entrySet());
-        ranked.sort((a, b) -> b.getValue() - a.getValue());
+        ranked.sort((a, b) -> Integer.compare(b.getValue(), a.getValue()));
 
         System.out.println("\n--- BUSIEST DEPARTURE STATIONS ---");
         System.out.printf("%-5s %-22s %10s%n", "RANK", "STATION", "BOARDINGS");
@@ -127,22 +113,19 @@ public class ReportService {
         }
     }
 
-    /** Lists every cancelled ticket. */
     public void showCancelledTickets() {
         System.out.println("\n--- CANCELLED TICKETS ---");
-        System.out.printf("%-10s %-16s %-22s %10s%n", "TICKET", "PASSENGER", "JOURNEY", "REFUND");
+        System.out.printf("%-10s %-16s %-22s %12s%n", "TICKET", "PASSENGER", "JOURNEY", "VALUE");
 
         boolean found = false;
         for (Ticket ticket : ticketService.getAllTickets()) {
             if (ticket.getStatus() != TicketStatus.CANCELLED) continue;
             found = true;
             String journey = ticket.getSource().getName() + " -> " + ticket.getDestination().getName();
-            System.out.printf("%-10s %-16s %-22s %7s%.2f%n",
+            System.out.printf("%-10s %-16s %-22s %10s%.2f%n",
                     ticket.getTicketId(), ticket.getPassenger().getName(), journey, "RM ", ticket.getFare());
         }
 
-        if (!found) {
-            System.out.println("No cancelled tickets.");
-        }
+        if (!found) System.out.println("No cancelled tickets.");
     }
 }
