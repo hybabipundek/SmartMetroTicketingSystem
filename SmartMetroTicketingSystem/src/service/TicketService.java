@@ -1,5 +1,7 @@
 package service;
-import java.util.ArrayList; 
+
+import java.util.ArrayList;
+
 import fare.StandardFareCalculator;
 import fare.FareCalculator;
 import enums.TicketStatus;
@@ -14,17 +16,14 @@ public class TicketService {
     private FareCalculator fareCalculator;
 
     public TicketService() {
-        tickets = new ArrayList<>();  //tickets = [];
+        tickets = new ArrayList<>();
         fareCalculator = new StandardFareCalculator();
     }
-    
-    // Calculate Fare
-    public double calculateFare(Route route, TicketType type)
-    {
+
+    public double calculateFare(Route route, TicketType type) {
         return fareCalculator.calculateFare(route, type);
     }
 
-    // Buy Ticket
     public Ticket buyTicket(String ticketId,
                             Passenger passenger,
                             Route route,
@@ -41,73 +40,48 @@ public class TicketService {
                 TicketStatus.ACTIVE,
                 fare
         );
-        //when start , the number of ticket = 0 
-        tickets.add(ticket);  //buy ticket, number of ticket = 1 , 2 , 3...
 
+        tickets.add(ticket);
         return ticket;
     }
-    
-    //generate ticketID
-    public String generateTicketId()
-    {
-    	return "TK" + String.format("%03d", tickets.size() + 1);
+
+    public String generateTicketId() {
+        return "TK" + String.format("%03d", tickets.size() + 1);
     }
 
-    // Search Ticket
     public Ticket searchTicket(String ticketId) {
-
         for (Ticket ticket : tickets) {
-
-            if (ticket.getTicketId().equals(ticketId)) {
+            if (ticket.getTicketId().equalsIgnoreCase(ticketId)) {
                 return ticket;
             }
-
         }
-
         return null;
     }
 
-    // Cancel Ticket
     public void cancelTicket(String ticketId) {
-
         Ticket ticket = searchTicket(ticketId);
 
         if (ticket != null) {
-
             ticket.cancelTicket();
-
             System.out.println("Ticket cancelled successfully.");
-
         } else {
-
             System.out.println("Ticket not found.");
-
         }
-
     }
 
-    // View Tickets
     public void viewTickets(Passenger passenger) {
-
         boolean found = false;
 
         for (Ticket ticket : tickets) {
-
             if (ticket.getPassenger().equals(passenger)) {
-
                 ticket.printTicket();
                 found = true;
-
             }
-
         }
 
         if (!found) {
-
             System.out.println("No tickets found.");
-
         }
-
     }
 
     public ArrayList<Ticket> getAllTickets() {
@@ -117,5 +91,4 @@ public class TicketService {
     public void setTickets(ArrayList<Ticket> tickets) {
         this.tickets = (tickets == null) ? new ArrayList<>() : tickets;
     }
-
 }

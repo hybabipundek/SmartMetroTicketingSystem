@@ -3,7 +3,6 @@ package model;
 import enums.UserRole;
 
 public class Passenger extends User {
-
     private double balance;
 
     public Passenger() {
@@ -24,10 +23,19 @@ public class Passenger extends User {
         this.balance = balance;
     }
 
+    public boolean deductBalance(double amount) {
+        if (amount <= 0 || balance < amount) return false;
+        balance -= amount;
+        return true;
+    }
+
+    public void topUp(double amount) {
+        if (amount > 0) balance += amount;
+    }
+
     @Override
     public String toString() {
         return super.toString() +
                "\nBalance: RM " + String.format("%.2f", balance);
     }
-
 }
