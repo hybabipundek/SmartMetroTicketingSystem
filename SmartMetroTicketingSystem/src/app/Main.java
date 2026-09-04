@@ -122,7 +122,8 @@ public class Main {
         System.out.println("│ 10.  Update User                                         │");
         System.out.println("│ 11.  Delete User                                         │");
         System.out.println("│ 12.  View Reports                                        │");
-        System.out.println("│ 13.  Logout                                              │");
+        System.out.println("│ 13.  Export Report to File                               │");
+        System.out.println("│ 14.  Logout                                              │");
         System.out.println("└──────────────────────────────────────────────────────────┘");
         System.out.print("  Enter your choice: ");
     }
@@ -574,6 +575,14 @@ public class Main {
                     reportService.generateReport();
                     break;
                 case 13:
+                    try {
+                        java.nio.file.Path saved = reportService.exportReport();
+                        System.out.println("Report saved to: " + saved.toAbsolutePath());
+                    } catch (FileProcessingException e) {
+                        System.out.println("Export failed: " + e.getMessage());
+                    }
+                    break;
+                case 14:
                     adminRunning = false;
                     System.out.println("Logged out successfully.");
                     break;
