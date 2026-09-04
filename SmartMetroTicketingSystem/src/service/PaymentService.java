@@ -2,8 +2,12 @@ package service;
 
 import payment.Payment;
 
+/**
+ * Service class responsible for processing payments through the Payment interface.
+ */
 public class PaymentService {
 
+// Delegates payment processing to the selected Payment implementation.
     public boolean processPayment(Payment payment, double amount) {
         if (payment == null) {
             System.out.println("Error. No payment method selected.");

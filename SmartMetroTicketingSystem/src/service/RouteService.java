@@ -5,14 +5,19 @@ import model.Route;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+/**
+ * Service class responsible for storing, managing, searching, viewing, and sorting metro routes.
+ */
 public class RouteService {
 
     private ArrayList<Route> routes;
 
+// Initializes the RouteService object.
     public RouteService() {
         routes = new ArrayList<>();
     }
 
+// Adds a route to the route collection after route validation.
     public void addRoute(Route route) {
         if (route == null || route.getSource() == null || route.getDestination() == null) {
             System.out.println("Invalid route.");
@@ -40,6 +45,7 @@ public class RouteService {
         System.out.println("Route added: " + route.getSource().getName() + " -> " + route.getDestination().getName());
     }
 
+// Finds a route matching the specified source and destination stations.
     public Route findRoute(Station source, Station destination) {
         if (source == null || destination == null) return null;
         for (Route r : routes) {
@@ -51,6 +57,7 @@ public class RouteService {
         return null;
     }
 
+// Displays all stored routes.
     public void viewRoutes() {
         if (routes.isEmpty()) {
             System.out.println("No routes available.");
@@ -63,15 +70,18 @@ public class RouteService {
         }
     }
 
+// Sorts routes according to their distance.
     public void sortRoutesByDistance() {
         routes.sort(Comparator.comparingDouble(Route::getDistanceKm));
         System.out.println("Routes sorted by distance.");
     }
 
+// Returns the route collection used by the system.
     public ArrayList<Route> getAllRoutes() {
         return routes;
     }
 
+// Updates the route collection with loaded data.
     public void setRoutes(ArrayList<Route> routes) {
         this.routes = (routes == null) ? new ArrayList<>() : routes;
     }

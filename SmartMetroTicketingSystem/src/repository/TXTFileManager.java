@@ -26,6 +26,9 @@ import service.TicketService;
 import service.TrainService;
 import service.UserService;
 
+/**
+ * File manager implementation that saves and loads the required system data using TXT files.
+ */
 public class TXTFileManager implements FileManager{
 
     private final Path dataDirectory;
@@ -35,6 +38,7 @@ public class TXTFileManager implements FileManager{
     private final RouteService routeService;
     private final TicketService ticketService;
 
+// Initializes the TXTFileManager object.
     public TXTFileManager() {
         this(Paths.get("data"), null, null, null, null, null);
     }
@@ -58,6 +62,7 @@ public class TXTFileManager implements FileManager{
     }
 
     @Override
+// Loads application data from the selected file format into the service collections.
     public void loadData() {
         requireServices();
         loadUsers();
@@ -68,6 +73,7 @@ public class TXTFileManager implements FileManager{
     }
 
     @Override
+// Saves the current application data to files.
     public void saveData() {
         requireServices();
         try {
@@ -82,6 +88,7 @@ public class TXTFileManager implements FileManager{
         }
     }
 
+// Loads user records from the data file.
     private void loadUsers() {
         if (!Files.exists(file("users.txt"))) return;
         HashMap<String, User> loaded = new HashMap<>();
@@ -101,6 +108,7 @@ public class TXTFileManager implements FileManager{
         userService.setAllUsers(loaded);
     }
 
+// Loads station records and returns the stations indexed by ID.
     private HashMap<String, Station> loadStations() {
         HashMap<String, Station> stations = new HashMap<>();
         if (!Files.exists(file("stations.txt"))) return stations;
@@ -115,6 +123,7 @@ public class TXTFileManager implements FileManager{
         return stations;
     }
 
+// Loads train records into the train service.
     private void loadTrains() {
         if (!Files.exists(file("trains.txt"))) return;
         ArrayList<Train> loaded = new ArrayList<>();
@@ -125,6 +134,7 @@ public class TXTFileManager implements FileManager{
         trainService.setTrains(loaded);
     }
 
+// Loads route records and reconnects them to their station objects.
     private void loadRoutes(HashMap<String, Station> stations) {
         if (!Files.exists(file("routes.txt"))) return;
         ArrayList<Route> loaded = new ArrayList<>();
@@ -138,6 +148,7 @@ public class TXTFileManager implements FileManager{
         routeService.setRoutes(loaded);
     }
 
+// Loads ticket records and reconnects them to passengers and stations.
     private void loadTickets(HashMap<String, Station> stations) {
         if (!Files.exists(file("tickets.txt"))) return;
         ArrayList<Ticket> loaded = new ArrayList<>();
@@ -223,6 +234,7 @@ public class TXTFileManager implements FileManager{
         Files.write(file(name), lines, StandardCharsets.UTF_8);
     }
 
+// Reads lines from the requested TXT data file.
     private List<String> read(String name) {
         try {
             List<String> lines = new ArrayList<>();
@@ -235,10 +247,12 @@ public class TXTFileManager implements FileManager{
         }
     }
 
+// Builds the path for a data file.
     private Path file(String name) {
         return dataDirectory.resolve(name);
     }
 
+// Checks that the required service objects are available before file operations.
     private void requireServices() {
         if (userService == null || stationService == null || trainService == null
                 || routeService == null || ticketService == null) {
@@ -246,6 +260,7 @@ public class TXTFileManager implements FileManager{
         }
     }
 
+// Splits and validates a TXT record into its individual fields.
     private List<String> fields(String line, int minimum) {
         List<String> result = new ArrayList<>();
         StringBuilder field = new StringBuilder();
@@ -270,21 +285,25 @@ public class TXTFileManager implements FileManager{
         return result;
     }
 
+// Checks that a loaded record contains the required number of fields.
     private void requireFieldCount(List<String> fields, int minimum, String type) {
         if (fields.size() < minimum) throw new FileProcessingException("Invalid " + type + " record");
     }
 
+// Escapes text values before they are written to a TXT data file.
     private String escape(String value) {
         return value.replace("\\", "\\\\").replace("|", "\\|")
                 .replace("\n", "\\n").replace("\r", "\\r");
     }
 
+// Finds a station object by station ID while loading TXT records.
     private Station station(HashMap<String, Station> stations, String id) {
         Station station = stations.get(id);
         if (station == null) throw new FileProcessingException("Station not found: " + id);
         return station;
     }
 
+// Finds a user object using its user ID.
     private User findUserById(String id) {
         for (User user : userService.getAllUsers().values()) {
             if (id.equals(user.getUserId())) return user;
@@ -292,16 +311,19 @@ public class TXTFileManager implements FileManager{
         return null;
     }
 
+// Converts a TXT field into an integer value.
     private int integer(String value, String field) {
         try { return Integer.parseInt(value); }
         catch (NumberFormatException exception) { throw new FileProcessingException("Invalid " + field + ": " + value, exception); }
     }
 
+// Converts a TXT field into a numeric value.
     private double number(String value, String field) {
         try { return Double.parseDouble(value); }
         catch (NumberFormatException exception) { throw new FileProcessingException("Invalid " + field + ": " + value, exception); }
     }
 
+// Converts a stored TXT value into the corresponding enum constant.
     private <T extends Enum<T>> T enumValue(Class<T> type, String value, String field) {
         try { return Enum.valueOf(type, value); }
         catch (IllegalArgumentException exception) { throw new FileProcessingException("Invalid " + field + ": " + value, exception); }

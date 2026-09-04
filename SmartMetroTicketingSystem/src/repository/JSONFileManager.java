@@ -28,6 +28,9 @@ import service.TicketService;
 import service.TrainService;
 import service.UserService;
 
+/**
+ * Optional file manager implementation that saves and loads system data using JSON format.
+ */
 public class JSONFileManager implements FileManager {
 
     private final Path dataDirectory;
@@ -37,6 +40,7 @@ public class JSONFileManager implements FileManager {
     private final RouteService routeService;
     private final TicketService ticketService;
 
+// Initializes the JSONFileManager object.
     public JSONFileManager() {
         this(Paths.get("data"), null, null, null, null, null);
     }
@@ -60,6 +64,7 @@ public class JSONFileManager implements FileManager {
     }
 
     @Override
+// Loads application data from the selected file format into the service collections.
     public void loadData() {
         requireServices();
         loadUsers();
@@ -70,6 +75,7 @@ public class JSONFileManager implements FileManager {
     }
 
     @Override
+// Saves the current application data to files.
     public void saveData() {
         requireServices();
         try {
@@ -85,6 +91,7 @@ public class JSONFileManager implements FileManager {
         }
     }
 
+// Loads user records from the data file.
     private void loadUsers() {
         List<Map<String, Object>> records = records("users.json");
         if (records == null) return;
@@ -105,6 +112,7 @@ public class JSONFileManager implements FileManager {
         userService.setAllUsers(loaded);
     }
 
+// Loads station records and returns the stations indexed by ID.
     private HashMap<String, Station> loadStations() {
         List<Map<String, Object>> records = records("stations.json");
         HashMap<String, Station> stations = new HashMap<>();
@@ -120,6 +128,7 @@ public class JSONFileManager implements FileManager {
         return stations;
     }
 
+// Loads train records into the train service.
     private void loadTrains() {
         List<Map<String, Object>> records = records("trains.json");
         if (records == null) return;
@@ -131,6 +140,7 @@ public class JSONFileManager implements FileManager {
         trainService.setTrains(loaded);
     }
 
+// Loads route records and reconnects them to their station objects.
     private void loadRoutes(HashMap<String, Station> stations) {
         List<Map<String, Object>> records = records("routes.json");
         if (records == null) return;
@@ -142,6 +152,7 @@ public class JSONFileManager implements FileManager {
         routeService.setRoutes(loaded);
     }
 
+// Loads ticket records and reconnects them to passengers and stations.
     private void loadTickets(HashMap<String, Station> stations) {
         List<Map<String, Object>> records = records("tickets.json");
         if (records == null) return;
@@ -161,6 +172,7 @@ public class JSONFileManager implements FileManager {
         ticketService.setTickets(loaded);
     }
 
+// Builds the JSON representation of user data.
     private String usersJson() {
         List<Map<String, Object>> records = new ArrayList<>();
         for (User user : userService.getAllUsers().values()) {
@@ -176,6 +188,7 @@ public class JSONFileManager implements FileManager {
         return Json.write(records);
     }
 
+// Builds the JSON representation of station data.
     private String stationsJson() {
         List<Map<String, Object>> records = new ArrayList<>();
         for (Station station : stationService.getAllStations()) {
@@ -188,6 +201,7 @@ public class JSONFileManager implements FileManager {
         return Json.write(records);
     }
 
+// Builds the JSON representation of train data.
     private String trainsJson() {
         List<Map<String, Object>> records = new ArrayList<>();
         for (Train train : trainService.getAllTrains()) {
@@ -200,6 +214,7 @@ public class JSONFileManager implements FileManager {
         return Json.write(records);
     }
 
+// Builds the JSON representation of route data.
     private String routesJson() {
         List<Map<String, Object>> records = new ArrayList<>();
         for (Route route : routeService.getAllRoutes()) {
@@ -213,6 +228,7 @@ public class JSONFileManager implements FileManager {
         return Json.write(records);
     }
 
+// Builds the JSON representation of ticket data.
     private String ticketsJson() {
         List<Map<String, Object>> records = new ArrayList<>();
         for (Ticket ticket : ticketService.getAllTickets()) {
@@ -234,6 +250,7 @@ public class JSONFileManager implements FileManager {
     }
 
     @SuppressWarnings("unchecked")
+// Retrieves record elements from an XML document.
     private List<Map<String, Object>> records(String name) {
         Path path = dataDirectory.resolve(name);
         if (!Files.exists(path)) return null;
@@ -254,24 +271,28 @@ public class JSONFileManager implements FileManager {
         }
     }
 
+// Retrieves a string field from a JSON record.
     private String string(Map<String, Object> record, String field) {
         Object value = record.get(field);
         if (!(value instanceof String)) throw new FileProcessingException("Invalid JSON field: " + field);
         return (String) value;
     }
 
+// Retrieves and converts an integer field from a JSON record.
     private int integer(Map<String, Object> record, String field) {
         Object value = record.get(field);
         if (!(value instanceof Number)) throw new FileProcessingException("Invalid JSON field: " + field);
         return ((Number) value).intValue();
     }
 
+// Retrieves and converts a numeric field from a JSON record.
     private double number(Map<String, Object> record, String field) {
         Object value = record.get(field);
         if (!(value instanceof Number)) throw new FileProcessingException("Invalid JSON field: " + field);
         return ((Number) value).doubleValue();
     }
 
+// Converts a stored JSON value into the corresponding enum constant.
     private <T extends Enum<T>> T enumValue(Class<T> type, String value, String field) {
         try {
             return Enum.valueOf(type, value);
@@ -280,12 +301,14 @@ public class JSONFileManager implements FileManager {
         }
     }
 
+// Finds a station object by station ID while loading JSON records.
     private Station station(HashMap<String, Station> stations, String id) {
         Station station = stations.get(id);
         if (station == null) throw new FileProcessingException("Station not found: " + id);
         return station;
     }
 
+// Finds a user object using its user ID.
     private User findUserById(String id) {
         for (User user : userService.getAllUsers().values()) {
             if (id.equals(user.getUserId())) return user;
@@ -293,6 +316,7 @@ public class JSONFileManager implements FileManager {
         return null;
     }
 
+// Checks that the required service objects are available before file operations.
     private void requireServices() {
         if (userService == null || stationService == null || trainService == null
                 || routeService == null || ticketService == null) {
@@ -300,7 +324,11 @@ public class JSONFileManager implements FileManager {
         }
     }
 
+/**
+ * Internal helper class used by JSONFileManager to build and parse JSON data.
+ */
     private static final class Json {
+// Initializes the Json object.
         private Json() {
         }
 
@@ -310,6 +338,7 @@ public class JSONFileManager implements FileManager {
             return result.toString();
         }
 
+// Appends a value to the JSON output while applying the required JSON formatting.
         private static void append(StringBuilder result, Object value) {
             if (value == null) {
                 result.append("null");
@@ -358,6 +387,9 @@ public class JSONFileManager implements FileManager {
             return result;
         }
 
+/**
+ * Provides the Parser functionality used by the Smart Metro Ticketing System.
+ */
         private static final class Parser {
             private final String input;
             private int position;

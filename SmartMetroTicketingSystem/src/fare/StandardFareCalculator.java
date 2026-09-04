@@ -2,7 +2,11 @@ package fare;
 import enums.TicketType;
 import model.Route;
 
+/**
+ * Standard implementation of FareCalculator that calculates fare using route distance and ticket type.
+ */
 public class StandardFareCalculator implements FareCalculator{
+// Calculates the fare for the specified route and ticket type.
 	public double calculateFare(Route route, TicketType ticketType) {
 		double distance = route.getDistanceKm();
 		double fare;

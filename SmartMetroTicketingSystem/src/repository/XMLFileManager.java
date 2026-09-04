@@ -40,6 +40,9 @@ import service.TicketService;
 import service.TrainService;
 import service.UserService;
 
+/**
+ * Optional file manager implementation that saves and loads system data using XML format.
+ */
 public class XMLFileManager implements FileManager {
 
     private final Path dataDirectory;
@@ -49,6 +52,7 @@ public class XMLFileManager implements FileManager {
     private final RouteService routeService;
     private final TicketService ticketService;
 
+// Initializes the XMLFileManager object.
     public XMLFileManager() {
         this(Paths.get("data"), null, null, null, null, null);
     }
@@ -72,6 +76,7 @@ public class XMLFileManager implements FileManager {
     }
 
     @Override
+// Loads application data from the selected file format into the service collections.
     public void loadData() {
         requireServices();
         loadUsers();
@@ -82,6 +87,7 @@ public class XMLFileManager implements FileManager {
     }
 
     @Override
+// Saves the current application data to files.
     public void saveData() {
         requireServices();
         try {
@@ -96,6 +102,7 @@ public class XMLFileManager implements FileManager {
         }
     }
 
+// Loads user records from the data file.
     private void loadUsers() {
         Document document = document("users.xml");
         if (document == null) return;
@@ -116,6 +123,7 @@ public class XMLFileManager implements FileManager {
         userService.setAllUsers(loaded);
     }
 
+// Loads station records and returns the stations indexed by ID.
     private HashMap<String, Station> loadStations() {
         Document document = document("stations.xml");
         HashMap<String, Station> stations = new HashMap<>();
@@ -131,6 +139,7 @@ public class XMLFileManager implements FileManager {
         return stations;
     }
 
+// Loads train records into the train service.
     private void loadTrains() {
         Document document = document("trains.xml");
         if (document == null) return;
@@ -142,6 +151,7 @@ public class XMLFileManager implements FileManager {
         trainService.setTrains(loaded);
     }
 
+// Loads route records and reconnects them to their station objects.
     private void loadRoutes(HashMap<String, Station> stations) {
         Document document = document("routes.xml");
         if (document == null) return;
@@ -153,6 +163,7 @@ public class XMLFileManager implements FileManager {
         routeService.setRoutes(loaded);
     }
 
+// Loads ticket records and reconnects them to passengers and stations.
     private void loadTickets(HashMap<String, Station> stations) {
         Document document = document("tickets.xml");
         if (document == null) return;
@@ -245,6 +256,7 @@ public class XMLFileManager implements FileManager {
         write("tickets.xml", document);
     }
 
+// Loads an XML document from the requested file.
     private Document document(String name) {
         Path path = dataDirectory.resolve(name);
         if (name.endsWith(".xml")) {
@@ -284,6 +296,7 @@ public class XMLFileManager implements FileManager {
         transformer.transform(new DOMSource(document), new StreamResult(dataDirectory.resolve(name).toFile()));
     }
 
+// Retrieves record elements from an XML document.
     private ArrayList<Element> records(Document document) {
         ArrayList<Element> result = new ArrayList<>();
         NodeList nodes = document.getDocumentElement().getChildNodes();
@@ -294,18 +307,21 @@ public class XMLFileManager implements FileManager {
         return result;
     }
 
+// Adds a child XML element containing the supplied value.
     private void child(Document document, Element parent, String name, Object value) {
         Element element = document.createElement(name);
         element.setTextContent(String.valueOf(value));
         parent.appendChild(element);
     }
 
+// Reads text from a named XML child element.
     private String text(Element element, String name) {
         NodeList nodes = element.getElementsByTagName(name);
         if (nodes.getLength() == 0) throw new FileProcessingException("Missing XML field: " + name);
         return nodes.item(0).getTextContent();
     }
 
+// Retrieves and converts an integer field from a loaded record.
     private int integer(Element element, String name) {
         try {
             return Integer.parseInt(text(element, name));
@@ -314,6 +330,7 @@ public class XMLFileManager implements FileManager {
         }
     }
 
+// Retrieves and converts a numeric field from a loaded record.
     private double number(Element element, String name) {
         try {
             return Double.parseDouble(text(element, name));
@@ -322,6 +339,7 @@ public class XMLFileManager implements FileManager {
         }
     }
 
+// Converts a stored XML value into the corresponding enum constant.
     private <T extends Enum<T>> T enumValue(Class<T> type, String value, String field) {
         try {
             return Enum.valueOf(type, value);
@@ -330,12 +348,14 @@ public class XMLFileManager implements FileManager {
         }
     }
 
+// Finds a station object by station ID while loading XML records.
     private Station station(HashMap<String, Station> stations, String id) {
         Station station = stations.get(id);
         if (station == null) throw new FileProcessingException("Station not found: " + id);
         return station;
     }
 
+// Finds a user object using its user ID.
     private User findUserById(String id) {
         for (User user : userService.getAllUsers().values()) {
             if (id.equals(user.getUserId())) return user;
@@ -343,6 +363,7 @@ public class XMLFileManager implements FileManager {
         return null;
     }
 
+// Checks that the required service objects are available before file operations.
     private void requireServices() {
         if (userService == null || stationService == null || trainService == null
                 || routeService == null || ticketService == null) {

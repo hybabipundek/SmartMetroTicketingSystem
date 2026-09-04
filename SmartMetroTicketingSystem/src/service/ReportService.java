@@ -10,14 +10,19 @@ import enums.TicketStatus;
 import enums.TicketType;
 import model.Ticket;
 
+/**
+ * Service class responsible for generating summary reports from ticket data.
+ */
 public class ReportService {
 
     private final TicketService ticketService;
 
+// Initializes the ReportService object.
     public ReportService(TicketService ticketService) {
         this.ticketService = ticketService;
     }
 
+// Generates and displays the overall ticket and revenue report.
     public void generateReport() {
         System.out.println();
         System.out.println("==================================================");
@@ -41,6 +46,7 @@ public class ReportService {
         System.out.println("==================================================");
     }
 
+// Displays the total number of tickets sold.
     public void showTotalSales() {
         Map<TicketStatus, Integer> counts = new EnumMap<>(TicketStatus.class);
         for (TicketStatus status : TicketStatus.values()) counts.put(status, 0);
@@ -55,6 +61,7 @@ public class ReportService {
         }
     }
 
+// Displays the total revenue from tickets.
     public void showTotalRevenue() {
         double revenue = 0.0;
         double cancelledValue = 0.0;
@@ -77,6 +84,7 @@ public class ReportService {
         System.out.printf("%-22s : RM %.2f%n", "Average per ticket", average);
     }
 
+// Displays revenue grouped by ticket type.
     public void showRevenueByType() {
         Map<TicketType, Double> byType = new EnumMap<>(TicketType.class);
         for (TicketType type : TicketType.values()) byType.put(type, 0.0);
@@ -93,6 +101,7 @@ public class ReportService {
         }
     }
 
+// Displays the busiest departure stations based on ticket data.
     public void showBusiestStations() {
         Map<String, Integer> boardings = new HashMap<>();
         for (Ticket ticket : ticketService.getAllTickets()) {
@@ -113,6 +122,7 @@ public class ReportService {
         }
     }
 
+// Displays information about cancelled tickets.
     public void showCancelledTickets() {
         System.out.println("\n--- CANCELLED TICKETS ---");
         System.out.printf("%-10s %-16s %-22s %12s%n", "TICKET", "PASSENGER", "JOURNEY", "VALUE");

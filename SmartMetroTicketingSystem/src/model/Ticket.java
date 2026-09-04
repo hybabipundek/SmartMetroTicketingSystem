@@ -3,6 +3,9 @@ package model;
 import enums.TicketStatus;
 import enums.TicketType;
 
+/**
+ * Model class representing a booked metro ticket, including passenger, route, type, status, and fare.
+ */
 public class Ticket {
 
     private String ticketId;
@@ -13,6 +16,7 @@ public class Ticket {
     private TicketStatus status;
     private double fare;
 
+// Initializes the Ticket object.
     public Ticket() {
 
     }
@@ -30,62 +34,77 @@ public class Ticket {
         this.fare = fare;
     }
 
+// Returns the ticketid value.
     public String getTicketId() {
         return ticketId;
     }
 
+// Returns the passenger value.
     public Passenger getPassenger() {
         return passenger;
     }
 
+// Returns the source value.
     public Station getSource() {
         return source;
     }
 
+// Returns the destination value.
     public Station getDestination() {
         return destination;
     }
 
+// Returns the tickettype value.
     public TicketType getTicketType() {
         return ticketType;
     }
 
+// Returns the status value.
     public TicketStatus getStatus() {
         return status;
     }
 
+// Returns the fare value.
     public double getFare() {
         return fare;
     }
 
+// Updates the ticketid value.
     public void setTicketId(String ticketId) {
         this.ticketId = ticketId;
     }
 
+// Updates the passenger value.
     public void setPassenger(Passenger passenger) {
         this.passenger = passenger;
     }
 
+// Updates the source value.
     public void setSource(Station source) {
         this.source = source;
     }
 
+// Updates the destination value.
     public void setDestination(Station destination) {
         this.destination = destination;
     }
 
+// Updates the tickettype value.
     public void setTicketType(TicketType ticketType) {
         this.ticketType = ticketType;
     }
 
+// Updates the status value.
     public void setStatus(TicketStatus status) {
         this.status = status;
     }
 
+// Updates the fare value.
     public void setFare(double fare) {
         this.fare = fare;
     }
 
+// Displays the ticket details in the console.
     public void printTicket() {
 
         System.out.println("========== Ticket ==========");
@@ -100,6 +119,7 @@ public class Ticket {
 
     }
 
+// Changes the ticket status to cancelled.
     public void cancelTicket() {
 
         status = TicketStatus.CANCELLED;

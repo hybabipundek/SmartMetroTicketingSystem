@@ -28,6 +28,9 @@ import service.TrainService;
 import service.UserService;
 import utils.Validation;
 
+/**
+ * Main application class that provides the menu-driven console interface and coordinates the system services.
+ */
 public class Main {
 
     private final Scanner scanner = new Scanner(System.in);
@@ -42,11 +45,13 @@ public class Main {
     private final FileManager fileManager = new TXTFileManager(
             userService, stationService, trainService, routeService, ticketService);
 
+// Program entry point that creates the Main application and starts the system.
     public static void main(String[] args) {
         Main system = new Main();
         system.start();
     }
 
+// Displays Main information in the console.
     private void printMainHeader() {
         System.out.println();
         System.out.println("╔══════════════════════════════════════════════════════════╗");
@@ -55,6 +60,7 @@ public class Main {
         System.out.println("╚══════════════════════════════════════════════════════════╝");
     }
 
+// Displays Main information in the console.
     private void printSectionHeader(String title) {
         System.out.println();
         System.out.println("┌──────────────────────────────────────────────────────────┐");
@@ -62,6 +68,7 @@ public class Main {
         System.out.println("└──────────────────────────────────────────────────────────┘");
     }
 
+// Displays Main information in the console.
     private void printMainMenu() {
         System.out.println();
         System.out.println("┌─────────────────────── MAIN MENU ────────────────────────┐");
@@ -72,6 +79,7 @@ public class Main {
         System.out.print("  Enter your choice: ");
     }
 
+// Displays Main information in the console.
     private void printPassengerMenu(Passenger passenger) {
         System.out.println();
         System.out.println("╔══════════════════════════════════════════════════════════╗");
@@ -93,6 +101,7 @@ public class Main {
         System.out.print("  Enter your choice: ");
     }
 
+// Displays Main information in the console.
     private void printAdminMenu() {
         System.out.println();
         System.out.println("╔══════════════════════════════════════════════════════════╗");
@@ -118,6 +127,7 @@ public class Main {
         System.out.print("  Enter your choice: ");
     }
 
+// Loads saved data and controls the main menu until the user chooses to exit.
     public void start() {
         try {
             fileManager.loadData();
@@ -160,6 +170,7 @@ public class Main {
         }
     }
 
+// Authenticates a user and opens the appropriate Passenger or Admin menu.
     public void login() {
         printSectionHeader("LOGIN");
 
@@ -225,6 +236,7 @@ public class Main {
         }
     }
 
+// Handles passenger registration through the console interface.
     public void register() {
         printSectionHeader("CREATE PASSENGER ACCOUNT");
 
@@ -290,6 +302,7 @@ public class Main {
         }
     }
 
+// Displays and processes the available operations for the logged-in passenger.
     public void passengerMenu(Passenger passenger) {
         boolean passengerRunning = true;
 
@@ -339,6 +352,7 @@ public class Main {
         }
     }
 
+// Handles cancellation of a ticket belonging to the current passenger.
     private void cancelPassengerTicket(Passenger passenger) {
         printSectionHeader("CANCEL TICKET");
 
@@ -365,6 +379,7 @@ public class Main {
         }
     }
 
+// Validates and adds a top-up amount to a passenger account.
     private void topUpBalance(Passenger passenger) {
         printSectionHeader("TOP UP BALANCE");
 
@@ -388,6 +403,7 @@ public class Main {
         }
     }
 
+// Finds a route in the route service using its route ID.
     private Route findRouteById(String routeId) {
         for (Route route : routeService.getAllRoutes()) {
             if (route.getRouteId().equalsIgnoreCase(routeId)) return route;
@@ -395,6 +411,7 @@ public class Main {
         return null;
     }
 
+// Handles ticket booking by selecting a route and ticket type, calculating the fare, and processing payment.
     public void buyticket(Passenger passenger) {
         printSectionHeader("BUY METRO TICKET");
         System.out.println("\n===== BUY TICKET =====");
@@ -503,6 +520,7 @@ public class Main {
         ticket.printTicket();
     }
 
+// Displays and processes the available operations for the logged-in admin.
     public void adminMenu(Admin currentAdmin) {
         boolean adminRunning = true;
 
@@ -565,6 +583,7 @@ public class Main {
         }
     }
 
+// Collects station information and adds a new station to the station service.
     private void addStation() {
         printSectionHeader("ADD METRO STATION");
 
@@ -614,6 +633,7 @@ public class Main {
         stationService.addStation(new Station(stationId, stationName, location));
     }
 
+// Searches for a station by name and displays the matching station.
     private void searchStation() {
         printSectionHeader("SEARCH STATION");
 
@@ -640,6 +660,7 @@ public class Main {
         }
     }
 
+// Collects train information and adds a new train to the train service.
     private void addTrain() {
         printSectionHeader("ADD METRO TRAIN");
 
@@ -686,6 +707,7 @@ public class Main {
         trainService.addTrain(new Train(trainId, trainName, capacity));
     }
 
+// Collects route information and creates a route between two stations.
     public void addRoute() {
         printSectionHeader("CREATE METRO ROUTE");
         System.out.println("\n===== ADD ROUTE =====");
@@ -765,6 +787,7 @@ public class Main {
         routeService.addRoute(new Route(routeId, source, destination, distance));
     }
 
+// Updates the details of an existing user while preserving email uniqueness.
     private void updateUser() {
         printSectionHeader("UPDATE USER");
         System.out.print("Enter current user email (or 0 to cancel): ");
@@ -814,6 +837,7 @@ public class Main {
         userService.updateUser(email, name, newEmail, password);
     }
 
+// Reads and validates a user name from the console.
     private String readUserName() {
         while (true) {
             System.out.print("Enter new name (or 0 to cancel): ");
@@ -827,6 +851,7 @@ public class Main {
         }
     }
 
+// Removes a user from the user collection.
     private void deleteUser(Admin currentAdmin) {
         printSectionHeader("DELETE USER");
         System.out.print("Enter user email (or 0 to cancel): ");

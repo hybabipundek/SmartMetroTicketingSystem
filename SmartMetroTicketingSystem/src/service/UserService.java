@@ -8,12 +8,16 @@ import model.Passenger;
 import model.User;
 import utils.Validation;
 
+/**
+ * Service class responsible for user registration, login, profile-related operations, and user management.
+ */
 public class UserService {
 
     private HashMap<String, User> users;
     private int passengerCounter;
     private int adminCounter;
 
+// Initializes the UserService object.
     public UserService() {
         users = new HashMap<>();
         passengerCounter = 1;
@@ -29,6 +33,7 @@ public class UserService {
         users.put("admin@metro.com", admin);
     }
 
+// Validates that a name is present and follows the accepted name format.
     private boolean validateName(String name) {
         if (!Validation.validateName(name)) {
             System.out.println("Invalid name.");
@@ -37,6 +42,7 @@ public class UserService {
         return true;
     }
 
+// Validates that an email follows the accepted application format.
     private boolean validateEmail(String email) {
         if (!Validation.validateEmail(email)) {
             System.out.println("Invalid email format. Use a valid Gmail or metro.com address.");
@@ -45,6 +51,7 @@ public class UserService {
         return true;
     }
 
+// Validates that a password meets the minimum length requirement.
     private boolean validatePassword(String password) {
         if (!Validation.validatePassword(password)) {
             System.out.println("Password must contain at least 6 characters.");
@@ -57,6 +64,7 @@ public class UserService {
         return users.containsKey(email);
     }
 
+// Checks whether an email address is already stored in the user collection.
     public boolean emailExists(String email) {
         return email != null && users.containsKey(email);
     }
@@ -69,6 +77,7 @@ public class UserService {
         return String.format("A%03d", adminCounter++);
     }
 
+// Validates passenger details, creates a Passenger object, and stores it in the user HashMap.
     public boolean registerPassenger(String name, String email, String password, double balance) {
         if (!validateName(name)) return false;
         if (!validateEmail(email)) return false;
@@ -93,6 +102,7 @@ public class UserService {
         return true;
     }
 
+// Validates admin details, creates an Admin object, and stores it in the user HashMap.
     public boolean registerAdmin(String name, String email, String password) {
         if (!validateName(name)) return false;
         if (!validateEmail(email)) return false;
@@ -112,6 +122,7 @@ public class UserService {
         return true;
     }
 
+// Retrieves a user from the HashMap and verifies the supplied password.
     public User login(String email, String password) {
         User user = users.get(email);
 
@@ -123,6 +134,7 @@ public class UserService {
         return user;
     }
 
+// Finds a user using the email address stored as the HashMap key.
     public User findUserByEmail(String email) {
         if (!isEmailExist(email)) {
             System.out.println("Email does not exist.");
@@ -131,6 +143,7 @@ public class UserService {
         return users.get(email);
     }
 
+// Updates the details of an existing user while preserving email uniqueness.
     public boolean updateUser(String email, String newName, String newEmail, String newPassword) {
         User user = findUserByEmail(email);
         if (user == null) return false;
@@ -154,6 +167,7 @@ public class UserService {
         return true;
     }
 
+// Removes a user from the user collection.
     public boolean deleteUser(String email) {
         if (!isEmailExist(email)) {
             System.out.println("Email does not exist.");
@@ -165,6 +179,7 @@ public class UserService {
         return true;
     }
 
+// Validates and adds a top-up amount to a passenger account.
     public boolean topUpBalance(Passenger passenger, double amount) {
         if (passenger == null) {
             System.out.println("Passenger account not found.");
@@ -181,6 +196,7 @@ public class UserService {
         return true;
     }
 
+// Displays all users currently stored in the system.
     public void displayAllUsers() {
         if (users.isEmpty()) {
             System.out.println("No user found.");
@@ -193,16 +209,19 @@ public class UserService {
         }
     }
 
+// Returns the HashMap containing all users.
     public HashMap<String, User> getAllUsers() {
         return users;
     }
 
+// Replaces the current user collection with loaded user data.
     public void setAllUsers(HashMap<String, User> loadedUsers) {
         users = (loadedUsers == null) ? new HashMap<>() : loadedUsers;
         passengerCounter = nextCounter('P');
         adminCounter = nextCounter('A');
     }
 
+// Calculates the next numeric ID counter after loading existing users.
     private int nextCounter(char prefix) {
         int next = 1;
         for (User user : users.values()) {

@@ -2,15 +2,20 @@ package payment;
 
 import java.util.Scanner;
 
+/**
+ * Payment implementation that processes a ticket payment using cash input.
+ */
 public class CashPayment implements Payment {
 
     private final Scanner input;
 
+// Initializes the CashPayment object.
     public CashPayment(Scanner input) {
         this.input = input;
     }
 
     @Override
+// Processes the payment according to the concrete payment method.
     public boolean pay(double amount) {
         if (!Double.isFinite(amount) || amount <= 0) {
             System.out.println("Invalid payment amount.");

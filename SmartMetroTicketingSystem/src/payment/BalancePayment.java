@@ -2,15 +2,20 @@ package payment;
 
 import model.Passenger;
 
+/**
+ * Payment implementation that processes a ticket payment using the passenger's stored balance.
+ */
 public class BalancePayment implements Payment {
 
     private Passenger passenger;
 
+// Initializes the BalancePayment object.
     public BalancePayment(Passenger passenger) {
         this.passenger = passenger;
     }
 
     @Override
+// Processes the payment according to the concrete payment method.
     public boolean pay(double amount) {
         if (passenger == null) {
             System.out.println("Error. Passenger account not found.");
