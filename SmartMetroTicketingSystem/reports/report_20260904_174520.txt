@@ -1,0 +1,40 @@
+
+==================================================
+           SMART METRO SYSTEM REPORT
+==================================================
+
+--- TICKET SALES ---
+Total tickets sold     : 12
+  ACTIVE               : 9
+  CANCELLED            : 3
+  USED                 : 0
+
+--- REVENUE ---
+Total revenue          : RM 226.10
+Refunded (cancelled)   : RM 54.00
+Average per ticket     : RM 25.12
+
+--- REVENUE BY TICKET TYPE ---
+TYPE            REVENUE    SHARE
+SINGLE           RM 28.10    12.4%
+DAILY            RM 18.00     8.0%
+MONTHLY          RM 180.00    79.6%
+
+--- BUSIEST DEPARTURE STATIONS ---
+RANK  STATION                 BOARDINGS
+1     KL Sentral                      2
+2     Bukit Bintang                   1
+3     KLCC                            1
+4     Cochrane                        1
+5     Ampang Park                     1
+
+--- CANCELLED TICKETS ---
+TICKET     PASSENGER        JOURNEY                    REFUND
+TK005      David Ng         Bangsar -> KL Sentral      RM 4.50
+TK010      John Tan         Titiwangsa -> Bangsar      RM 7.50
+TK011      John Tan         Titiwangsa -> Bangsar      RM 42.00
+==================================================
+               END OF REPORT
+==================================================
+
+Generated on 04/09/2026 17:45:20
