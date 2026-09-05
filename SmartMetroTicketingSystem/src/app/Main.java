@@ -75,8 +75,10 @@ public class Main {
         System.out.println("│  1.  Login                                               │");
         System.out.println("│  2.  Register                                            │");
         System.out.println("│  3.  Exit                                                │");
+        System.out.println("│                                                          │");
+        System.out.println("│  New to Smart Metro? Start by registering.	           │");
         System.out.println("└──────────────────────────────────────────────────────────┘");
-        System.out.print("  Enter your choice: ");
+        System.out.print(" Enter your choice: ");
     }
 
 // Displays Main information in the console.
