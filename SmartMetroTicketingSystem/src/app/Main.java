@@ -531,7 +531,7 @@ public class Main {
             printAdminMenu();
             String choiceInput = scanner.nextLine().trim();
 
-            if (!Validation.validateChoice(choiceInput, 1, 13)) {
+            if (!Validation.validateChoice(choiceInput, 1, 14)) {
                 System.out.println("Invalid choice. Please try again.");
                 continue;
             }
