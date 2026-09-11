@@ -63,7 +63,8 @@ public class StationService {
 // Sorts stations alphabetically by name.
     public void sortStationsByName() {
         stations.sort(Comparator.comparing(Station::getName, String.CASE_INSENSITIVE_ORDER));
-        System.out.println("Stations sorted by name.");
+  
+        System.out.println("\nStations sorted by name.");
     }
 
 // Returns the station collection used by the system.

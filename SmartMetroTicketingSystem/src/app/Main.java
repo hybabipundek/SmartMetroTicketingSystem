@@ -564,14 +564,109 @@ public class Main {
                     routeService.viewRoutes();
                     break;
                 case 9:
-                    printSectionHeader("ALL USERS");
-                    userService.displayAllUsers();
+                    printSectionHeader("ALL PASSENGERS");
+
+                    for (User user : userService.getAllUsers().values()) {
+
+                        // Only display passengers
+                        if (!(user instanceof Passenger)) {
+                            continue;
+                        }
+
+                        Passenger passenger = (Passenger) user;
+                        int ticketCount = 0;
+
+                        for (Ticket ticket : ticketService.getAllTickets()) {
+                            if (ticket.getPassenger() == passenger) {
+                                ticketCount++;
+                            }
+                        }
+
+                        System.out.println("User ID: " + passenger.getUserId());
+                        System.out.println("Name: " + passenger.getName());
+                        System.out.println("Email: " + passenger.getEmail());
+                        System.out.println("Role: " + passenger.getRole());
+                        System.out.printf("Balance: RM%.2f%n", passenger.getBalance());
+                        System.out.println("Ticket Records: " + ticketCount +
+                                (ticketCount == 1 ? " ticket" : " tickets"));
+                        System.out.println("-------------------------");
+                    }
                     break;
                 case 10:
                     updateUser();
                     break;
                 case 11:
-                    deleteUser(currentAdmin);
+                    printSectionHeader("DELETE USER");
+
+                    while (true) {
+                        System.out.print("Enter user email (or 0 to cancel): ");
+                        String email = scanner.nextLine().trim();
+
+                        // Allow admin to cancel
+                        if (email.equals("0")) {
+                            System.out.println("Delete user cancelled.");
+                            break;
+                        }
+
+                        User user = userService.findUserByEmail(email);
+
+                        if (user == null) {
+                            System.out.println();
+                            continue;
+                        }
+
+                        // Admin cannot delete another admin account
+                        if (user instanceof Admin) {
+                            System.out.println("Admin account cannot be deleted.");
+                            System.out.println();
+                            continue;
+                        }
+
+                        Passenger passenger = (Passenger) user;
+
+                        int ticketCount = 0;
+                        for (Ticket ticket : ticketService.getAllTickets()) {
+                            if (ticket.getPassenger() == passenger) {
+                                ticketCount++;
+                            }
+                        }
+
+                        System.out.println();
+                        System.out.println("User found:");
+                        System.out.println("User ID: " + passenger.getUserId());
+                        System.out.println("Name: " + passenger.getName());
+                        System.out.println("Email: " + passenger.getEmail());
+                        System.out.println("Balance: RM" +
+                                String.format("%.2f", passenger.getBalance()));
+                        System.out.println("Ticket Records: " + ticketCount +
+                                (ticketCount == 1 ? " ticket" : " tickets"));
+
+                        if (ticketService.hasTickets(passenger)) {
+                            System.out.println();
+                            System.out.println("Cannot delete this passenger because");
+                            System.out.println("the passenger has ticket records.");
+                            System.out.println();
+                            continue;
+                        }
+                        
+                        while (true) {
+                            System.out.print("\nConfirm delete this user? (Y/N): ");
+                            String confirm = scanner.nextLine().trim();
+
+                            if (confirm.equalsIgnoreCase("Y")) {
+                                userService.deleteUser(email);
+                                System.out.println("User deleted successfully.");
+                                break;
+                            } 
+                            
+                            if (confirm.equalsIgnoreCase("N")) {
+                                System.out.println("Delete cancelled.");
+                                break;
+                            }
+
+                            System.out.println("Invalid input. Please enter Y or N.");
+                        }
+                    }
                     break;
                 case 12:
                     reportService.generateReport();

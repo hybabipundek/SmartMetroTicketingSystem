@@ -1,5 +1,6 @@
 S005|Ampang Park|Kuala Lumpur
 S006|Bangsar|Kuala Lumpur
+S012|belle|haoyang
 S003|Bukit Bintang|Kuala Lumpur
 S009|Cochrane|Kuala Lumpur
 S010|Kajang|Selangor
