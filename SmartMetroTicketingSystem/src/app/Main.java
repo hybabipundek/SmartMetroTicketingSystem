@@ -655,7 +655,6 @@ public class Main {
 
                             if (confirm.equalsIgnoreCase("Y")) {
                                 userService.deleteUser(email);
-                                System.out.println("User deleted successfully.");
                                 break;
                             } 
                             
