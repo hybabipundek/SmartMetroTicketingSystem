@@ -200,14 +200,11 @@ public class ReportService {
     private List<String> buildTotalRevenue() {
 
         double revenue = 0.0;
-        double refunded = 0.0;
         int counted = 0;
 
         for (Ticket ticket : ticketService.getAllTickets()) {
 
-            if (ticket.getStatus() == TicketStatus.CANCELLED) {
-                refunded += ticket.getFare();
-            } else {
+            if (ticket.getStatus() != TicketStatus.CANCELLED) {
                 revenue += ticket.getFare();
                 counted++;
             }
@@ -224,10 +221,6 @@ public class ReportService {
                 "%-22s : RM %.2f",
                 "Total revenue",
                 revenue));
-        lines.add(String.format(
-                "%-22s : RM %.2f",
-                "Refunded (cancelled)",
-                refunded));
         lines.add(String.format(
                 "%-22s : RM %.2f",
                 "Average per ticket",
@@ -355,11 +348,10 @@ public class ReportService {
         lines.add("");
         lines.add("--- CANCELLED TICKETS ---");
         lines.add(String.format(
-                "%-10s %-16s %-22s %10s",
+                "%-10s %-16s %-22s",
                 "TICKET",
                 "PASSENGER",
-                "JOURNEY",
-                "REFUND"));
+                "JOURNEY"));
 
         boolean found = false;
 
@@ -377,12 +369,10 @@ public class ReportService {
                     + ticket.getDestination().getName();
 
             lines.add(String.format(
-                    "%-10s %-16s %-22s %7s%.2f",
+                    "%-10s %-16s %-22s",
                     ticket.getTicketId(),
                     ticket.getPassenger().getName(),
-                    journey,
-                    "RM ",
-                    ticket.getFare()));
+                    journey));
         }
 
         if (!found) {

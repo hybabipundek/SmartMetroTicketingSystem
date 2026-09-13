@@ -11,5 +11,4 @@ P009|Amy Lee|amy@gmail.com|password9|PASSENGER|55.00
 P010|lee hao yang|leehy08@gmail.com|123456|PASSENGER|10.00
 P011|kaiqi|ewree@gmail.com|1223344|PASSENGER|3.00
 P012|adammm|adam001@gmail.com|123456789|PASSENGER|0.01
-P013|Isabel|bel@gmail.com|999999|PASSENGER|3434234234.00
 P014|kaiiqii|kaiqi04@gmail.com|kaiqi0414|PASSENGER|174.50
