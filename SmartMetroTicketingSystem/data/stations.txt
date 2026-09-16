@@ -6,6 +6,7 @@ S009|Cochrane|Kuala Lumpur
 S010|Kajang|Selangor
 S001|KL Sentral|Kuala Lumpur
 S004|KLCC|Kuala Lumpur
+S013|Kuching Jaya|Cheras
 S007|Mid Valley|Kuala Lumpur
 S002|Pasar Seni|Kuala Lumpur
 S011|Putrajaya|Putrajaya
